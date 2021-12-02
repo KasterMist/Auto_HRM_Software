@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改VitDepartment')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-VitDepartment-edit" th:object="${vitDepartment}">
+            <input name="departmentId" th:field="*{departmentId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Department Name：</label>
+                <div class="col-sm-8">
+                    <input name="departmentName" th:field="*{departmentName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Comment：</label>
+                <div class="col-sm-8">
+                    <input name="comment" th:field="*{comment}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/VitDepartment";
+        $("#form-VitDepartment-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-VitDepartment-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
