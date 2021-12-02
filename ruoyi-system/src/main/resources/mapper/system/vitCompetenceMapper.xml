@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitCompetenceMapper">
+    
+    <resultMap type="vitCompetence" id="vitCompetenceResult">
+        <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="competenceDescription"    column="competence_description"    />
+        <result property="titleCompetence"    column="title_competence"    />
+        <result property="stdAutoCompetence"    column="std_auto_competence"    />
+        <result property="autoCompetenceCategoryId"    column="auto_competence_category_ID"    />
+        <result property="sapModuleId"    column="sap_module_ID"    />
+        <result property="autoProcessId"    column="auto_process_ID"    />
+        <result property="comment"    column="comment"    />
+    </resultMap>
+
+    <sql id="selectvitCompetenceVo">
+        select viscount_competence_code, competence_description, title_competence, std_auto_competence, auto_competence_category_ID, sap_module_ID, auto_process_ID, comment from 04_competence
+    </sql>
+
+    <select id="selectvitCompetenceList" parameterType="vitCompetence" resultMap="vitCompetenceResult">
+        <include refid="selectvitCompetenceVo"/>
+        <where>  
+            <if test="competenceDescription != null  and competenceDescription != ''"> and competence_description like concat('%', #{competenceDescription}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectvitCompetenceById" parameterType="String" resultMap="vitCompetenceResult">
+        <include refid="selectvitCompetenceVo"/>
+        where viscount_competence_code = #{viscountCompetenceCode}
+    </select>
+        
+    <insert id="insertvitCompetence" parameterType="vitCompetence">
+        insert into 04_competence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="competenceDescription != null">competence_description,</if>
+            <if test="titleCompetence != null">title_competence,</if>
+            <if test="stdAutoCompetence != null">std_auto_competence,</if>
+            <if test="autoCompetenceCategoryId != null">auto_competence_category_ID,</if>
+            <if test="sapModuleId != null">sap_module_ID,</if>
+            <if test="autoProcessId != null">auto_process_ID,</if>
+            <if test="comment != null">comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">#{competenceDescription},</if>
+            <if test="titleCompetence != null">#{titleCompetence},</if>
+            <if test="stdAutoCompetence != null">#{stdAutoCompetence},</if>
+            <if test="autoCompetenceCategoryId != null">#{autoCompetenceCategoryId},</if>
+            <if test="sapModuleId != null">#{sapModuleId},</if>
+            <if test="autoProcessId != null">#{autoProcessId},</if>
+            <if test="comment != null">#{comment},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitCompetence" parameterType="vitCompetence">
+        update 04_competence
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="competenceDescription != null">competence_description = #{competenceDescription},</if>
+            <if test="titleCompetence != null">title_competence = #{titleCompetence},</if>
+            <if test="stdAutoCompetence != null">std_auto_competence = #{stdAutoCompetence},</if>
+            <if test="autoCompetenceCategoryId != null">auto_competence_category_ID = #{autoCompetenceCategoryId},</if>
+            <if test="sapModuleId != null">sap_module_ID = #{sapModuleId},</if>
+            <if test="autoProcessId != null">auto_process_ID = #{autoProcessId},</if>
+            <if test="comment != null">comment = #{comment},</if>
+        </trim>
+        where viscount_competence_code = #{viscountCompetenceCode}
+    </update>
+
+    <delete id="deletevitCompetenceById" parameterType="String">
+        delete from 04_competence where viscount_competence_code = #{viscountCompetenceCode}
+    </delete>
+
+    <delete id="deletevitCompetenceByIds" parameterType="String">
+        delete from 04_competence where viscount_competence_code in 
+        <foreach item="viscountCompetenceCode" collection="array" open="(" separator="," close=")">
+            #{viscountCompetenceCode}
+        </foreach>
+    </delete>
+
+</mapper>

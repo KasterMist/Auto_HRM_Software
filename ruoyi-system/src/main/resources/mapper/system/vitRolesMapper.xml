@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitRolesMapper">
+    
+    <resultMap type="vitRoles" id="vitRolesResult">
+        <result property="roleId"    column="role_ID"    />
+        <result property="viscountRolesId"    column="viscount_roles_ID"    />
+        <result property="roleDescription"    column="role_description"    />
+        <result property="autoRoleBreakdown"    column="auto_role_breakdown"    />
+    </resultMap>
+
+    <sql id="selectvitRolesVo">
+        select role_ID, viscount_roles_ID, role_description, auto_role_breakdown from 02_roles
+    </sql>
+
+    <select id="selectvitRolesList" parameterType="vitRoles" resultMap="vitRolesResult">
+        <include refid="selectvitRolesVo"/>
+        <where>  
+            <if test="roleDescription != null  and roleDescription != ''"> and role_description = #{roleDescription}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitRolesById" parameterType="Long" resultMap="vitRolesResult">
+        <include refid="selectvitRolesVo"/>
+        where role_ID = #{roleId}
+    </select>
+        
+    <insert id="insertvitRoles" parameterType="vitRoles" useGeneratedKeys="true" keyProperty="roleId">
+        insert into 02_roles
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viscountRolesId != null and viscountRolesId != ''">viscount_roles_ID,</if>
+            <if test="roleDescription != null">role_description,</if>
+            <if test="autoRoleBreakdown != null">auto_role_breakdown,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viscountRolesId != null and viscountRolesId != ''">#{viscountRolesId},</if>
+            <if test="roleDescription != null">#{roleDescription},</if>
+            <if test="autoRoleBreakdown != null">#{autoRoleBreakdown},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitRoles" parameterType="vitRoles">
+        update 02_roles
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="viscountRolesId != null and viscountRolesId != ''">viscount_roles_ID = #{viscountRolesId},</if>
+            <if test="roleDescription != null">role_description = #{roleDescription},</if>
+            <if test="autoRoleBreakdown != null">auto_role_breakdown = #{autoRoleBreakdown},</if>
+        </trim>
+        where role_ID = #{roleId}
+    </update>
+
+    <delete id="deletevitRolesById" parameterType="Long">
+        delete from 02_roles where role_ID = #{roleId}
+    </delete>
+
+    <delete id="deletevitRolesByIds" parameterType="String">
+        delete from 02_roles where role_ID in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+
+</mapper>

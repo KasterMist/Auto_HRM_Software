@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增vitCompetence')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vitCompetence-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">viscountCompetenceCode：</label>
+                <div class="col-sm-8">
+                    <input name="viscountCompetenceCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">competenceDescription：</label>
+                <div class="col-sm-8">
+                    <input name="competenceDescription" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">titleCompetence：</label>
+                <div class="col-sm-8">
+                    <input name="titleCompetence" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">stdAutoCompetence：</label>
+                <div class="col-sm-8">
+                    <input name="stdAutoCompetence" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">autoCompetenceCategoryId：</label>
+                <div class="col-sm-8">
+                    <input name="autoCompetenceCategoryId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">sapModuleId：</label>
+                <div class="col-sm-8">
+                    <input name="sapModuleId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">autoProcessId：</label>
+                <div class="col-sm-8">
+                    <input name="autoProcessId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">comment：</label>
+                <div class="col-sm-8">
+                    <input name="comment" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vitCompetence"
+        $("#form-vitCompetence-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-vitCompetence-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
