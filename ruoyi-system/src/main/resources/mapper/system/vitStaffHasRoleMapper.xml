@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitStaffHasRoleMapper">
+    
+    <resultMap type="vitStaffHasRole" id="vitStaffHasRoleResult">
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="viscountRolesId"    column="viscount_roles_ID"    />
+        <result property="roleDescription"    column="role_description"    />
+        <result property="active"    column="active"    />
+        <result property="roleTypeCode"    column="role_type_code"    />
+        <result property="comment"    column="comment"    />
+    </resultMap>
+
+    <sql id="selectvitStaffHasRoleVo">
+        select name, code, viscount_roles_ID, role_description, active, role_type_code, comment from 03_staff_has_role
+    </sql>
+
+    <select id="selectvitStaffHasRoleList" parameterType="vitStaffHasRole" resultMap="vitStaffHasRoleResult">
+        <include refid="selectvitStaffHasRoleVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="roleDescription != null  and roleDescription != ''"> and role_description = #{roleDescription}</if>
+            <if test="active != null  and active != ''"> and active = #{active}</if>
+            <if test="roleTypeCode != null "> and role_type_code = #{roleTypeCode}</if>
+            <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectvitStaffHasRoleById" parameterType="String" resultMap="vitStaffHasRoleResult">
+        <include refid="selectvitStaffHasRoleVo"/>
+        where name = #{name}
+    </select>
+        
+    <insert id="insertvitStaffHasRole" parameterType="vitStaffHasRole">
+        insert into 03_staff_has_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="code != null">code,</if>
+            <if test="viscountRolesId != null">viscount_roles_ID,</if>
+            <if test="roleDescription != null">role_description,</if>
+            <if test="active != null">active,</if>
+            <if test="roleTypeCode != null">role_type_code,</if>
+            <if test="comment != null">comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="viscountRolesId != null">#{viscountRolesId},</if>
+            <if test="roleDescription != null">#{roleDescription},</if>
+            <if test="active != null">#{active},</if>
+            <if test="roleTypeCode != null">#{roleTypeCode},</if>
+            <if test="comment != null">#{comment},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitStaffHasRole" parameterType="vitStaffHasRole">
+        update 03_staff_has_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="viscountRolesId != null">viscount_roles_ID = #{viscountRolesId},</if>
+            <if test="roleDescription != null">role_description = #{roleDescription},</if>
+            <if test="active != null">active = #{active},</if>
+            <if test="roleTypeCode != null">role_type_code = #{roleTypeCode},</if>
+            <if test="comment != null">comment = #{comment},</if>
+        </trim>
+        where name = #{name}
+    </update>
+
+    <delete id="deletevitStaffHasRoleById" parameterType="String">
+        delete from 03_staff_has_role where name = #{name}
+    </delete>
+
+    <delete id="deletevitStaffHasRoleByIds" parameterType="String">
+        delete from 03_staff_has_role where name in 
+        <foreach item="name" collection="array" open="(" separator="," close=")">
+            #{name}
+        </foreach>
+    </delete>
+
+</mapper>

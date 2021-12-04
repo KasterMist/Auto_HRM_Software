@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改vitStaff')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vitStaff-edit" th:object="${vitStaff}">
+            <input name="staffId" th:field="*{staffId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">name：</label>
+                <div class="col-sm-8">
+                    <input name="name" th:field="*{name}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">department：</label>
+                <div class="col-sm-8">
+                    <input name="department" th:field="*{department}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">employeeId：</label>
+                <div class="col-sm-8">
+                    <input name="employeeId" th:field="*{employeeId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">emailAddress：</label>
+                <div class="col-sm-8">
+                    <input name="emailAddress" th:field="*{emailAddress}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">authority：</label>
+                <div class="col-sm-8">
+                    <input name="authority" th:field="*{authority}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vitStaff";
+        $("#form-vitStaff-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-vitStaff-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

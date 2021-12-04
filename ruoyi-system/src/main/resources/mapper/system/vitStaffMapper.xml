@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitStaffMapper">
+    
+    <resultMap type="vitStaff" id="vitStaffResult">
+        <result property="staffId"    column="staff_ID"    />
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="department"    column="department"    />
+        <result property="employeeId"    column="employee_ID"    />
+        <result property="emailAddress"    column="email_address"    />
+        <result property="authority"    column="authority"    />
+    </resultMap>
+
+    <sql id="selectvitStaffVo">
+        select staff_ID, name, code, department, employee_ID, email_address, authority from 01_staff
+    </sql>
+
+    <select id="getvitStaffListAll" parameterType="vitStaff" resultMap="vitStaffResult">
+        select staff_ID, name, code, department, employee_ID, email_address, authority from 01_staff
+    </select>
+
+    <select id="selectvitStaffList" parameterType="vitStaff" resultMap="vitStaffResult">
+        <include refid="selectvitStaffVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="department != null  and department != ''"> and department like concat('%', #{department}, '%')</if>
+            <if test="employeeId != null  and employeeId != ''"> and employee_ID = #{employeeId}</if>
+            <if test="emailAddress != null  and emailAddress != ''"> and email_address = #{emailAddress}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitStaffById" parameterType="Long" resultMap="vitStaffResult">
+        <include refid="selectvitStaffVo"/>
+        where staff_ID = #{staffId}
+    </select>
+        
+    <insert id="insertvitStaff" parameterType="vitStaff" useGeneratedKeys="true" keyProperty="staffId">
+        insert into 01_staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="code != null">code,</if>
+            <if test="department != null">department,</if>
+            <if test="employeeId != null">employee_ID,</if>
+            <if test="emailAddress != null">email_address,</if>
+            <if test="authority != null">authority,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="department != null">#{department},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="emailAddress != null">#{emailAddress},</if>
+            <if test="authority != null">#{authority},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitStaff" parameterType="vitStaff">
+        update 01_staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="employeeId != null">employee_ID = #{employeeId},</if>
+            <if test="emailAddress != null">email_address = #{emailAddress},</if>
+            <if test="authority != null">authority = #{authority},</if>
+        </trim>
+        where staff_ID = #{staffId}
+    </update>
+
+    <delete id="deletevitStaffById" parameterType="Long">
+        delete from 01_staff where staff_ID = #{staffId}
+    </delete>
+
+    <delete id="deletevitStaffByIds" parameterType="String">
+        delete from 01_staff where staff_ID in 
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </delete>
+
+</mapper>

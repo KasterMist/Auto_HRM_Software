@@ -9,11 +9,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="viscountRolesId"    column="viscount_roles_ID"    />
         <result property="roleDescription"    column="role_description"    />
         <result property="autoRoleBreakdown"    column="auto_role_breakdown"    />
+<!--        <association property="roleType"     column="viscount_roles_ID" javaType="vitRoleType" resultMap="vitRoleType" />-->
     </resultMap>
+
+<!--    <resultMap type="vitRoleType" id="vitRoleTypeResult">-->
+<!--        <result property="roleTypeId"    column="role_type_ID"    />-->
+<!--        <result property="viscountRolesId"    column="viscount_roles_ID"    />-->
+<!--        <result property="roleTypeDescription"    column="role_type_description"    />-->
+<!--    </resultMap>-->
 
     <sql id="selectvitRolesVo">
         select role_ID, viscount_roles_ID, role_description, auto_role_breakdown from 02_roles
     </sql>
+
+<!--    <sql id="selectvitRolesVo">-->
+<!--        select r.role_ID, r.viscount_roles_ID, r.role_description, r.auto_role_breakdown, rt.role_type_ID, rt.viscount_roles_ID, rt.role_type_description-->
+<!--        from 02_roles r-->
+<!--                 left join 19_role_type rt on r.viscount_roles_ID = rt.viscount_roles_ID-->
+<!--    </sql>-->
 
     <select id="selectvitRolesList" parameterType="vitRoles" resultMap="vitRolesResult">
         <include refid="selectvitRolesVo"/>
