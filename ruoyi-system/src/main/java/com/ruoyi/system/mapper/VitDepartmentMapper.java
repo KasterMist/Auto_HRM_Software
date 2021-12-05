@@ -58,4 +58,7 @@ public interface VitDepartmentMapper
      * @return 结果
      */
     public int deleteVitDepartmentByIds(String[] departmentIds);
+
+    public List<VitDepartment> selectVitDepartmentAll();
+
 }

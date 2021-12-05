@@ -110,4 +110,9 @@ public class vitStaffServiceImpl implements IvitStaffService
     public List<vitStaff> getvitStaffListAll(){
         return vitStaffMapper.getvitStaffListAll();
     }
+
+    @Override
+    public vitStaff selectvitStaffByName(String name){
+        return vitStaffMapper.selectvitStaffByName(name);
+    }
 }

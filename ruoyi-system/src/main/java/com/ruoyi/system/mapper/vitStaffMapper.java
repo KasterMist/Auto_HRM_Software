@@ -60,4 +60,7 @@ public interface vitStaffMapper
     public int deletevitStaffByIds(String[] staffIds);
 
     public List<vitStaff> getvitStaffListAll();
+
+    public vitStaff selectvitStaffByName(String name);
+
 }

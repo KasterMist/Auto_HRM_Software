@@ -61,4 +61,6 @@ public interface IvitStaffService
 
     public List<vitStaff> getvitStaffListAll();
 
+    public vitStaff selectvitStaffByName(String name);
+
 }

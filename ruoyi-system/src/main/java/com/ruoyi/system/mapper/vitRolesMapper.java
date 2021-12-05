@@ -58,4 +58,8 @@ public interface vitRolesMapper
      * @return 结果
      */
     public int deletevitRolesByIds(String[] roleIds);
+
+    public List<vitRoles> selectVitRolesAll();
+
+    public vitRoles selectVitRolesDescription(String roleDescription);
 }

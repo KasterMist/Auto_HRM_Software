@@ -15,6 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select department_ID, department_code, department_name, comment from 23_department
     </sql>
 
+    <select id="selectVitDepartmentAll" parameterType="VitDepartment" resultMap="VitDepartmentResult">
+        <include refid="selectVitDepartmentVo"/>
+    </select>
+
     <select id="selectVitDepartmentList" parameterType="VitDepartment" resultMap="VitDepartmentResult">
         <include refid="selectVitDepartmentVo"/>
         <where>  

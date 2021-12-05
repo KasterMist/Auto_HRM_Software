@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.system.mapper.vitStaffHasRoleMapper">
     
     <resultMap type="vitStaffHasRole" id="vitStaffHasRoleResult">
+        <result property="staffHasRoleId"    column="staff_has_role_ID"    />
         <result property="name"    column="name"    />
         <result property="code"    column="code"    />
         <result property="viscountRolesId"    column="viscount_roles_ID"    />
@@ -15,26 +16,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectvitStaffHasRoleVo">
-        select name, code, viscount_roles_ID, role_description, active, role_type_code, comment from 03_staff_has_role
+        select staff_has_role_ID, name, code, viscount_roles_ID, role_description, active, role_type_code, comment from 03_staff_has_role
     </sql>
 
     <select id="selectvitStaffHasRoleList" parameterType="vitStaffHasRole" resultMap="vitStaffHasRoleResult">
         <include refid="selectvitStaffHasRoleVo"/>
         <where>  
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="roleDescription != null  and roleDescription != ''"> and role_description = #{roleDescription}</if>
+            <if test="name != null  and name != ''"> and name = #{name}</if>
+            <if test="roleDescription != null  and roleDescription != ''"> and role_description like concat('%', #{roleDescription}, '%')</if>
             <if test="active != null  and active != ''"> and active = #{active}</if>
             <if test="roleTypeCode != null "> and role_type_code = #{roleTypeCode}</if>
             <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
         </where>
     </select>
     
-    <select id="selectvitStaffHasRoleById" parameterType="String" resultMap="vitStaffHasRoleResult">
+    <select id="selectvitStaffHasRoleById" parameterType="Long" resultMap="vitStaffHasRoleResult">
         <include refid="selectvitStaffHasRoleVo"/>
-        where name = #{name}
+        where staff_has_role_ID = #{staffHasRoleId}
     </select>
         
-    <insert id="insertvitStaffHasRole" parameterType="vitStaffHasRole">
+    <insert id="insertvitStaffHasRole" parameterType="vitStaffHasRole" useGeneratedKeys="true" keyProperty="staffHasRoleId">
         insert into 03_staff_has_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
@@ -59,6 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatevitStaffHasRole" parameterType="vitStaffHasRole">
         update 03_staff_has_role
         <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
             <if test="code != null">code = #{code},</if>
             <if test="viscountRolesId != null">viscount_roles_ID = #{viscountRolesId},</if>
             <if test="roleDescription != null">role_description = #{roleDescription},</if>
@@ -66,17 +68,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="roleTypeCode != null">role_type_code = #{roleTypeCode},</if>
             <if test="comment != null">comment = #{comment},</if>
         </trim>
-        where name = #{name}
+        where staff_has_role_ID = #{staffHasRoleId}
     </update>
 
-    <delete id="deletevitStaffHasRoleById" parameterType="String">
-        delete from 03_staff_has_role where name = #{name}
+    <delete id="deletevitStaffHasRoleById" parameterType="Long">
+        delete from 03_staff_has_role where staff_has_role_ID = #{staffHasRoleId}
     </delete>
 
     <delete id="deletevitStaffHasRoleByIds" parameterType="String">
-        delete from 03_staff_has_role where name in 
-        <foreach item="name" collection="array" open="(" separator="," close=")">
-            #{name}
+        delete from 03_staff_has_role where staff_has_role_ID in 
+        <foreach item="staffHasRoleId" collection="array" open="(" separator="," close=")">
+            #{staffHasRoleId}
         </foreach>
     </delete>
 

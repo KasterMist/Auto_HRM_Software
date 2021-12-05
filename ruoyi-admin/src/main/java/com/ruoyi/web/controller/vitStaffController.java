@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller;
 
 import java.util.List;
+
+import com.ruoyi.system.service.IVitDepartmentService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.system.domain.VitDepartment;
 
 /**
  * vitStaffController
@@ -33,6 +36,9 @@ public class vitStaffController extends BaseController
 
     @Autowired
     private IvitStaffService vitStaffService;
+
+    @Autowired
+    private IVitDepartmentService vitDepartmentService;
 
     @RequiresPermissions("system:vitStaff:view")
     @GetMapping()
@@ -72,8 +78,10 @@ public class vitStaffController extends BaseController
      * 新增vitStaff
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        List<VitDepartment> vitDepartmentList = vitDepartmentService.selectVitDepartmentAll();
+        mmap.put("vitDepartments", vitDepartmentList);
         return prefix + "/add";
     }
 
@@ -97,6 +105,8 @@ public class vitStaffController extends BaseController
     {
         vitStaff vitStaff = vitStaffService.selectvitStaffById(staffId);
         mmap.put("vitStaff", vitStaff);
+        List<VitDepartment> vitDepartmentList = vitDepartmentService.selectVitDepartmentAll();
+        mmap.put("vitDepartments", vitDepartmentList);
         return prefix + "/edit";
     }
 

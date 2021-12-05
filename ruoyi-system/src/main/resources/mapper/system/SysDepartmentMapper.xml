@@ -16,6 +16,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select department_id, department_name, parent_id, ancestors from sys_department
     </sql>
 
+    <select id="selectSysDepartmentAll" parameterType="SysDepartment" resultMap="SysDepartmentResult">
+        <include refid="selectSysDepartmentVo"/>
+    </select>
+
     <select id="selectSysDepartmentList" parameterType="SysDepartment" resultMap="SysDepartmentResult">
         <include refid="selectSysDepartmentVo"/>
         <where>  

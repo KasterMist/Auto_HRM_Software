@@ -22,6 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select role_ID, viscount_roles_ID, role_description, auto_role_breakdown from 02_roles
     </sql>
 
+    <select id="selectVitRolesAll" parameterType="vitRoles" resultMap="vitRolesResult">
+        <include refid="selectvitRolesVo"/>
+    </select>
+
+    <select id="selectVitRolesDescription" parameterType="vitRoles" resultMap="vitRolesResult">
+        <include refid="selectvitRolesVo"/>
+        where role_description = #{roleDescription}
+    </select>
+
 <!--    <sql id="selectvitRolesVo">-->
 <!--        select r.role_ID, r.viscount_roles_ID, r.role_description, r.auto_role_breakdown, rt.role_type_ID, rt.viscount_roles_ID, rt.role_type_description-->
 <!--        from 02_roles r-->

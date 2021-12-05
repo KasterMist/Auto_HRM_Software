@@ -58,4 +58,6 @@ public interface IVitDepartmentService
      * @return 结果
      */
     public int deleteVitDepartmentById(Integer departmentId);
+
+    public List<VitDepartment> selectVitDepartmentAll();
 }

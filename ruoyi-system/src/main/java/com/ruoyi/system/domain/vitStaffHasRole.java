@@ -9,11 +9,14 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * vitStaffHasRole对象 03_staff_has_role
  * 
  * @author ruoyi
- * @date 2021-12-04
+ * @date 2021-12-05
  */
 public class vitStaffHasRole extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+
+    /** staffHasRoleId */
+    private Long staffHasRoleId;
 
     /** name */
     @Excel(name = "name")
@@ -41,6 +44,15 @@ public class vitStaffHasRole extends BaseEntity
     @Excel(name = "comment")
     private String comment;
 
+    public void setStaffHasRoleId(Long staffHasRoleId) 
+    {
+        this.staffHasRoleId = staffHasRoleId;
+    }
+
+    public Long getStaffHasRoleId() 
+    {
+        return staffHasRoleId;
+    }
     public void setName(String name) 
     {
         this.name = name;
@@ -108,6 +120,7 @@ public class vitStaffHasRole extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("staffHasRoleId", getStaffHasRoleId())
             .append("name", getName())
             .append("code", getCode())
             .append("viscountRolesId", getViscountRolesId())

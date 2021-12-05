@@ -1,6 +1,11 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.vitRoles;
+import com.ruoyi.system.domain.vitStaff;
+import com.ruoyi.system.mapper.vitRolesMapper;
+import com.ruoyi.system.mapper.vitStaffMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.vitStaffHasRoleMapper;
@@ -12,7 +17,7 @@ import com.ruoyi.common.core.text.Convert;
  * vitStaffHasRoleService业务层处理
  * 
  * @author ruoyi
- * @date 2021-12-04
+ * @date 2021-12-05
  */
 @Service
 public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService 
@@ -20,16 +25,22 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     @Autowired
     private vitStaffHasRoleMapper vitStaffHasRoleMapper;
 
+    @Autowired
+    private vitStaffMapper vitstaffMapper;
+
+    @Autowired
+    private vitRolesMapper vitrolesMapper;
+
     /**
      * 查询vitStaffHasRole
      * 
-     * @param name vitStaffHasRoleID
+     * @param staffHasRoleId vitStaffHasRoleID
      * @return vitStaffHasRole
      */
     @Override
-    public vitStaffHasRole selectvitStaffHasRoleById(String name)
+    public vitStaffHasRole selectvitStaffHasRoleById(Long staffHasRoleId)
     {
-        return vitStaffHasRoleMapper.selectvitStaffHasRoleById(name);
+        return vitStaffHasRoleMapper.selectvitStaffHasRoleById(staffHasRoleId);
     }
 
     /**
@@ -53,6 +64,11 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     @Override
     public int insertvitStaffHasRole(vitStaffHasRole vitStaffHasRole)
     {
+        vitStaff staff = vitstaffMapper.selectvitStaffByName(vitStaffHasRole.getName());
+        System.out.println(vitStaffHasRole.getRoleDescription());
+        vitRoles role = vitrolesMapper.selectVitRolesDescription(vitStaffHasRole.getRoleDescription());
+        vitStaffHasRole.setCode(staff.getCode());
+        vitStaffHasRole.setViscountRolesId(role.getViscountRolesId());
         return vitStaffHasRoleMapper.insertvitStaffHasRole(vitStaffHasRole);
     }
 
@@ -65,6 +81,10 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     @Override
     public int updatevitStaffHasRole(vitStaffHasRole vitStaffHasRole)
     {
+        vitStaff staff = vitstaffMapper.selectvitStaffByName(vitStaffHasRole.getName());
+        vitRoles role = vitrolesMapper.selectVitRolesDescription(vitStaffHasRole.getRoleDescription());
+        vitStaffHasRole.setCode(staff.getCode());
+        vitStaffHasRole.setViscountRolesId(role.getViscountRolesId());
         return vitStaffHasRoleMapper.updatevitStaffHasRole(vitStaffHasRole);
     }
 
@@ -83,12 +103,12 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     /**
      * 删除vitStaffHasRole信息
      * 
-     * @param name vitStaffHasRoleID
+     * @param staffHasRoleId vitStaffHasRoleID
      * @return 结果
      */
     @Override
-    public int deletevitStaffHasRoleById(String name)
+    public int deletevitStaffHasRoleById(Long staffHasRoleId)
     {
-        return vitStaffHasRoleMapper.deletevitStaffHasRoleById(name);
+        return vitStaffHasRoleMapper.deletevitStaffHasRoleById(staffHasRoleId);
     }
 }

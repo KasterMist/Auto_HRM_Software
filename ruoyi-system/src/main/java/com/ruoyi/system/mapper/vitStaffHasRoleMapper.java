@@ -7,17 +7,17 @@ import com.ruoyi.system.domain.vitStaffHasRole;
  * vitStaffHasRoleMapper接口
  * 
  * @author ruoyi
- * @date 2021-12-04
+ * @date 2021-12-05
  */
 public interface vitStaffHasRoleMapper 
 {
     /**
      * 查询vitStaffHasRole
      * 
-     * @param name vitStaffHasRoleID
+     * @param staffHasRoleId vitStaffHasRoleID
      * @return vitStaffHasRole
      */
-    public vitStaffHasRole selectvitStaffHasRoleById(String name);
+    public vitStaffHasRole selectvitStaffHasRoleById(Long staffHasRoleId);
 
     /**
      * 查询vitStaffHasRole列表
@@ -46,16 +46,16 @@ public interface vitStaffHasRoleMapper
     /**
      * 删除vitStaffHasRole
      * 
-     * @param name vitStaffHasRoleID
+     * @param staffHasRoleId vitStaffHasRoleID
      * @return 结果
      */
-    public int deletevitStaffHasRoleById(String name);
+    public int deletevitStaffHasRoleById(Long staffHasRoleId);
 
     /**
      * 批量删除vitStaffHasRole
      * 
-     * @param names 需要删除的数据ID
+     * @param staffHasRoleIds 需要删除的数据ID
      * @return 结果
      */
-    public int deletevitStaffHasRoleByIds(String[] names);
+    public int deletevitStaffHasRoleByIds(String[] staffHasRoleIds);
 }

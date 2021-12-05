@@ -91,4 +91,14 @@ public class vitRolesServiceImpl implements IvitRolesService
     {
         return vitRolesMapper.deletevitRolesById(roleId);
     }
+
+    @Override
+    public List<vitRoles> selectVitRolesAll(){
+        return vitRolesMapper.selectVitRolesAll();
+    }
+
+    @Override
+    public vitRoles selectVitRolesDescription(String roleDescription){
+        return vitRolesMapper.selectVitRolesDescription(roleDescription);
+    }
 }

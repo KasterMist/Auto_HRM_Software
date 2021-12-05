@@ -2,21 +2,38 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改vitStaffHasRole')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-vitStaffHasRole-edit" th:object="${vitStaffHasRole}">
-            <input name="name" th:field="*{name}" type="hidden">
+            <input name="staffHasRoleId" th:field="*{staffHasRoleId}" type="hidden">
             <div class="form-group">    
                 <label class="col-sm-3 control-label">name：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="name" th:field="*{name}" class="form-control" type="text">-->
+<!--                </div>-->
                 <div class="col-sm-8">
-                    <input name="name" th:field="*{name}" class="form-control" type="text">
+                    <select name="name" id="name" lay-verify="required" class="form-control">
+                        <option th:field="*{name}" th:each="vitStaff:${vitStaffs}" th:value="${vitStaff.name}"
+                                th:text="${vitStaff.name}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">roleDescription：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="roleDescription" th:field="*{roleDescription}" class="form-control" type="text">-->
+<!--                </div>-->
+
                 <div class="col-sm-8">
-                    <input name="roleDescription" th:field="*{roleDescription}" class="form-control" type="text">
+                    <select name="roleDescription" id="roleDescription" lay-verify="required" class="form-control">
+                        <option th:field="*{roleDescription}" th:each="vitRoles:${vitRoles}" th:value="${vitRoles.roleDescription}"
+                                th:text="${vitRoles.roleDescription}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
@@ -40,6 +57,10 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
     <script th:inline="javascript">
         var prefix = ctx + "system/vitStaffHasRole";
         $("#form-vitStaffHasRole-edit").validate({
@@ -48,7 +69,14 @@
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-vitStaffHasRole-edit').serialize());
+                data = $('#form-vitStaffHasRole-edit').serializeArray()
+                var vitStaffnames = $.form.selectSelects("staffName");
+                data.push({"name": "vitStaffnames", "value": vitStaffnames});
+                var vitRoleDescription = $.form.selectSelects("roleDescription");
+                data.push({"name": "vitRoleDescription", "value": vitRoleDescription});
+
+                // $.operate.save(prefix + "/edit", $('#form-vitStaffHasRole-edit').serialize());
+                $.operate.save(prefix + "/edit", data);
             }
         }
     </script>

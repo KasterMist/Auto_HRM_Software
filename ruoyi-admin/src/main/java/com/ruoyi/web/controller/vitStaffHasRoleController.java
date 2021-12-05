@@ -1,6 +1,11 @@
 package com.ruoyi.web.controller;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.vitRoles;
+import com.ruoyi.system.domain.vitStaff;
+import com.ruoyi.system.service.IvitRolesService;
+import com.ruoyi.system.service.IvitStaffService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * vitStaffHasRoleController
  * 
  * @author ruoyi
- * @date 2021-12-04
+ * @date 2021-12-05
  */
 @Controller
 @RequestMapping("/system/vitStaffHasRole")
@@ -33,6 +38,12 @@ public class vitStaffHasRoleController extends BaseController
 
     @Autowired
     private IvitStaffHasRoleService vitStaffHasRoleService;
+
+    @Autowired
+    private IvitStaffService vitStaffService;
+
+    @Autowired
+    private IvitRolesService vitRolesService;
 
     @RequiresPermissions("system:vitStaffHasRole:view")
     @GetMapping()
@@ -72,8 +83,12 @@ public class vitStaffHasRoleController extends BaseController
      * 新增vitStaffHasRole
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
+        List<vitRoles> vitRolesList = vitRolesService.selectVitRolesAll();
+        mmap.put("vitStaffs", vitStaffList);
+        mmap.put("vitRoles", vitRolesList);
         return prefix + "/add";
     }
 
@@ -92,11 +107,15 @@ public class vitStaffHasRoleController extends BaseController
     /**
      * 修改vitStaffHasRole
      */
-    @GetMapping("/edit/{name}")
-    public String edit(@PathVariable("name") String name, ModelMap mmap)
+    @GetMapping("/edit/{staffHasRoleId}")
+    public String edit(@PathVariable("staffHasRoleId") Long staffHasRoleId, ModelMap mmap)
     {
-        vitStaffHasRole vitStaffHasRole = vitStaffHasRoleService.selectvitStaffHasRoleById(name);
+        vitStaffHasRole vitStaffHasRole = vitStaffHasRoleService.selectvitStaffHasRoleById(staffHasRoleId);
         mmap.put("vitStaffHasRole", vitStaffHasRole);
+        List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
+        List<vitRoles> vitRolesList = vitRolesService.selectVitRolesAll();
+        mmap.put("vitStaffs", vitStaffList);
+        mmap.put("vitRoles", vitRolesList);
         return prefix + "/edit";
     }
 

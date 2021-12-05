@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.SysDepartment;
 import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.system.domain.VitDepartment;
 
 /**
  * 部门档案Service接口
@@ -66,4 +67,6 @@ public interface ISysDepartmentService
      * @return 所有部门档案信息
      */
     public List<Ztree> selectSysDepartmentTree();
+
+
 }

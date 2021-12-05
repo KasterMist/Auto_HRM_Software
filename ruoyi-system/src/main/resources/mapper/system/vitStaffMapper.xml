@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select staff_ID, name, code, department, employee_ID, email_address, authority from 01_staff
     </sql>
 
+
     <select id="getvitStaffListAll" parameterType="vitStaff" resultMap="vitStaffResult">
         select staff_ID, name, code, department, employee_ID, email_address, authority from 01_staff
     </select>
@@ -35,6 +36,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectvitStaffById" parameterType="Long" resultMap="vitStaffResult">
         <include refid="selectvitStaffVo"/>
         where staff_ID = #{staffId}
+    </select>
+
+    <select id="selectvitStaffByName" parameterType="String" resultMap="vitStaffResult">
+        <include refid="selectvitStaffVo"/>
+        where name = #{name}
     </select>
         
     <insert id="insertvitStaff" parameterType="vitStaff" useGeneratedKeys="true" keyProperty="staffId">

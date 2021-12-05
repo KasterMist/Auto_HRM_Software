@@ -58,4 +58,8 @@ public interface IvitRolesService
      * @return 结果
      */
     public int deletevitRolesById(Long roleId);
+
+    public List<vitRoles> selectVitRolesAll();
+
+    public vitRoles selectVitRolesDescription(String roleDescription);
 }

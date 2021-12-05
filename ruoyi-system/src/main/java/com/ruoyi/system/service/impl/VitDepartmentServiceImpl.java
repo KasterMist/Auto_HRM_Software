@@ -91,4 +91,9 @@ public class VitDepartmentServiceImpl implements IVitDepartmentService
     {
         return vitDepartmentMapper.deleteVitDepartmentById(departmentId);
     }
+
+    @Override
+    public List<VitDepartment> selectVitDepartmentAll(){
+        return vitDepartmentMapper.selectVitDepartmentAll();
+    }
 }
