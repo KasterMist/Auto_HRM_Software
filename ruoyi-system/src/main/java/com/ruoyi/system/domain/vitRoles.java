@@ -3,15 +3,15 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.TreeEntity;
 
 /**
  * vitRoles对象 02_roles
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
-public class vitRoles extends BaseEntity
+public class vitRoles extends TreeEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -72,6 +72,7 @@ public class vitRoles extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("roleId", getRoleId())
             .append("viscountRolesId", getViscountRolesId())
+            .append("parentId", getParentId())
             .append("roleDescription", getRoleDescription())
             .append("autoRoleBreakdown", getAutoRoleBreakdown())
             .toString();

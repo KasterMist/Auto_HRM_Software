@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改vitRolesHasCompetenceTarget')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vitRolesHasCompetenceTarget-edit" th:object="${vitRolesHasCompetenceTarget}">
+            <input name="rolesHasCompetenceTargetId" th:field="*{rolesHasCompetenceTargetId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">rolesDescription：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="rolesDescription" th:field="*{rolesDescription}" class="form-control" type="text">-->
+<!--                </div>-->
+                <div class="col-sm-8">
+                    <select name="rolesDescription" id="rolesDescription" lay-verify="required" class="form-control">
+                        <option th:field="*{rolesDescription}" th:each="vitRoles:${vitRoles}" th:value="${vitRoles.roleDescription}"
+                                th:text="${vitRoles.roleDescription}"></option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">competenceDescription：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="competenceDescription" th:field="*{competenceDescription}" class="form-control" type="text">-->
+<!--                </div>-->
+                <div class="col-sm-8">
+                    <select name="competenceDescription" id="competenceDescription" lay-verify="required" class="form-control">
+                        <option th:field="*{competenceDescription}" th:each="vitCompetences:${vitCompetences}" th:value="${vitCompetences.competenceDescription}"
+                                th:text="${vitCompetences.competenceDescription}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">targetValue：</label>
+                <div class="col-sm-8">
+                    <input name="targetValue" th:field="*{targetValue}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vitRolesHasCompetenceTarget";
+        $("#form-vitRolesHasCompetenceTarget-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                data = $('#form-vitRolesHasCompetenceTarget-edit').serializeArray()
+                var vitRoleDescription = $.form.selectSelects("roleDescription");
+                data.push({"name": "vitRoleDescription", "value": vitRoleDescription});
+                var vitcompetenceDescription = $.form.selectSelects("competenceDescription");
+                data.push({"name": "vitcompetenceDescription", "value": vitcompetenceDescription});
+                // $.operate.save(prefix + "/edit", $('#form-vitRolesHasCompetenceTarget-edit').serialize());
+                $.operate.save(prefix + "/edit", data);
+            }
+        }
+    </script>
+</body>
+</html>

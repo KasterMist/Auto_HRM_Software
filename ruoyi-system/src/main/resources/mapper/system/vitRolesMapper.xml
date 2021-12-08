@@ -7,20 +7,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="vitRoles" id="vitRolesResult">
         <result property="roleId"    column="role_ID"    />
         <result property="viscountRolesId"    column="viscount_roles_ID"    />
+        <result property="parentId"    column="parent_ID"    />
         <result property="roleDescription"    column="role_description"    />
         <result property="autoRoleBreakdown"    column="auto_role_breakdown"    />
-<!--        <association property="roleType"     column="viscount_roles_ID" javaType="vitRoleType" resultMap="vitRoleType" />-->
+        <result property="parentName" column="parent_name" />
     </resultMap>
 
-<!--    <resultMap type="vitRoleType" id="vitRoleTypeResult">-->
-<!--        <result property="roleTypeId"    column="role_type_ID"    />-->
-<!--        <result property="viscountRolesId"    column="viscount_roles_ID"    />-->
-<!--        <result property="roleTypeDescription"    column="role_type_description"    />-->
-<!--    </resultMap>-->
-
     <sql id="selectvitRolesVo">
-        select role_ID, viscount_roles_ID, role_description, auto_role_breakdown from 02_roles
+        select role_ID, viscount_roles_ID, parent_ID, role_description, auto_role_breakdown from 02_roles
     </sql>
+
 
     <select id="selectVitRolesAll" parameterType="vitRoles" resultMap="vitRolesResult">
         <include refid="selectvitRolesVo"/>
@@ -31,33 +27,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where role_description = #{roleDescription}
     </select>
 
-<!--    <sql id="selectvitRolesVo">-->
-<!--        select r.role_ID, r.viscount_roles_ID, r.role_description, r.auto_role_breakdown, rt.role_type_ID, rt.viscount_roles_ID, rt.role_type_description-->
-<!--        from 02_roles r-->
-<!--                 left join 19_role_type rt on r.viscount_roles_ID = rt.viscount_roles_ID-->
-<!--    </sql>-->
+    <select id="selectVitRolesParentId" parameterType="vitRoles" resultMap="vitRolesResult">
+        <include refid="selectvitRolesVo"/>
+        where parent_ID = #{parentId}
+    </select>
 
     <select id="selectvitRolesList" parameterType="vitRoles" resultMap="vitRolesResult">
         <include refid="selectvitRolesVo"/>
         <where>  
-            <if test="roleDescription != null  and roleDescription != ''"> and role_description = #{roleDescription}</if>
+            <if test="parentId != null "> and parent_ID = #{parentId}</if>
+            <if test="roleDescription != null  and roleDescription != ''"> and role_description like concat('%', #{roleDescription}, '%')</if>
         </where>
+        order by parent_ID
     </select>
     
     <select id="selectvitRolesById" parameterType="Long" resultMap="vitRolesResult">
-        <include refid="selectvitRolesVo"/>
-        where role_ID = #{roleId}
+        select t.role_ID, t.viscount_roles_ID, t.parent_ID, t.role_description, t.auto_role_breakdown, p.role_description as parent_name
+        from 02_roles t
+        left join 02_roles p on p.role_ID = t.parent_ID
+        where t.role_ID = #{roleId}
     </select>
         
     <insert id="insertvitRoles" parameterType="vitRoles" useGeneratedKeys="true" keyProperty="roleId">
         insert into 02_roles
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="viscountRolesId != null and viscountRolesId != ''">viscount_roles_ID,</if>
+            <if test="parentId != null">parent_ID,</if>
             <if test="roleDescription != null">role_description,</if>
             <if test="autoRoleBreakdown != null">auto_role_breakdown,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="viscountRolesId != null and viscountRolesId != ''">#{viscountRolesId},</if>
+            <if test="parentId != null">#{parentId},</if>
             <if test="roleDescription != null">#{roleDescription},</if>
             <if test="autoRoleBreakdown != null">#{autoRoleBreakdown},</if>
          </trim>
@@ -67,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update 02_roles
         <trim prefix="SET" suffixOverrides=",">
             <if test="viscountRolesId != null and viscountRolesId != ''">viscount_roles_ID = #{viscountRolesId},</if>
+            <if test="parentId != null">parent_ID = #{parentId},</if>
             <if test="roleDescription != null">role_description = #{roleDescription},</if>
             <if test="autoRoleBreakdown != null">auto_role_breakdown = #{autoRoleBreakdown},</if>
         </trim>

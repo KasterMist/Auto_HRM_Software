@@ -17,13 +17,14 @@ import com.ruoyi.system.service.IvitRolesService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * vitRolesController
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 @Controller
 @RequestMapping("/system/vitRoles")
@@ -42,16 +43,15 @@ public class vitRolesController extends BaseController
     }
 
     /**
-     * 查询vitRoles列表
+     * 查询vitRoles树列表
      */
     @RequiresPermissions("system:vitRoles:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(vitRoles vitRoles)
+    public List<vitRoles> list(vitRoles vitRoles)
     {
-        startPage();
         List<vitRoles> list = vitRolesService.selectvitRolesList(vitRoles);
-        return getDataTable(list);
+        return list;
     }
 
     /**
@@ -71,9 +71,13 @@ public class vitRolesController extends BaseController
     /**
      * 新增vitRoles
      */
-    @GetMapping("/add")
-    public String add()
+    @GetMapping(value = { "/add/{roleId}", "/add/" })
+    public String add(@PathVariable(value = "roleId", required = false) Long roleId, ModelMap mmap)
     {
+        if (StringUtils.isNotNull(roleId))
+        {
+            mmap.put("vitRoles", vitRolesService.selectvitRolesById(roleId));
+        }
         return prefix + "/add";
     }
 
@@ -113,14 +117,38 @@ public class vitRolesController extends BaseController
     }
 
     /**
-     * 删除vitRoles
+     * 删除
      */
     @RequiresPermissions("system:vitRoles:remove")
     @Log(title = "vitRoles", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @GetMapping("/remove/{roleId}")
     @ResponseBody
-    public AjaxResult remove(String ids)
+    public AjaxResult remove(@PathVariable("roleId") Long roleId)
     {
-        return toAjax(vitRolesService.deletevitRolesByIds(ids));
+        return toAjax(vitRolesService.deletevitRolesById(roleId));
+    }
+
+    /**
+     * 选择vitRoles树
+     */
+    @GetMapping(value = { "/selectVitRolesTree/{roleId}", "/selectVitRolesTree/" })
+    public String selectVitRolesTree(@PathVariable(value = "roleId", required = false) Long roleId, ModelMap mmap)
+    {
+        if (StringUtils.isNotNull(roleId))
+        {
+            mmap.put("vitRoles", vitRolesService.selectvitRolesById(roleId));
+        }
+        return prefix + "/tree";
+    }
+
+    /**
+     * 加载vitRoles树列表
+     */
+    @GetMapping("/treeData")
+    @ResponseBody
+    public List<Ztree> treeData()
+    {
+        List<Ztree> ztrees = vitRolesService.selectvitRolesTree();
+        return ztrees;
     }
 }

@@ -2,22 +2,23 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.vitCompetence;
+import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * vitCompetenceService接口
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 public interface IvitCompetenceService 
 {
     /**
      * 查询vitCompetence
      * 
-     * @param viscountCompetenceCode vitCompetenceID
+     * @param competenceId vitCompetenceID
      * @return vitCompetence
      */
-    public vitCompetence selectvitCompetenceById(String viscountCompetenceCode);
+    public vitCompetence selectvitCompetenceById(Long competenceId);
 
     /**
      * 查询vitCompetence列表
@@ -54,8 +55,21 @@ public interface IvitCompetenceService
     /**
      * 删除vitCompetence信息
      * 
-     * @param viscountCompetenceCode vitCompetenceID
+     * @param competenceId vitCompetenceID
      * @return 结果
      */
-    public int deletevitCompetenceById(String viscountCompetenceCode);
+    public int deletevitCompetenceById(Long competenceId);
+
+    /**
+     * 查询vitCompetence树列表
+     * 
+     * @return 所有vitCompetence信息
+     */
+    public List<Ztree> selectvitCompetenceTree();
+
+    public List<vitCompetence> selectvitCompetenceAll();
+
+    public vitCompetence selectvitCompetenceDescription(String competenceDescription);
+
+    public List<vitCompetence> selectvitCompetenceParentId(Long parentId);
 }

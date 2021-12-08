@@ -5,7 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.system.mapper.vitCompetenceMapper">
     
     <resultMap type="vitCompetence" id="vitCompetenceResult">
+        <result property="competenceId"    column="competence_ID"    />
         <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="parentId"    column="parent_ID"    />
         <result property="competenceDescription"    column="competence_description"    />
         <result property="titleCompetence"    column="title_competence"    />
         <result property="stdAutoCompetence"    column="std_auto_competence"    />
@@ -13,28 +15,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sapModuleId"    column="sap_module_ID"    />
         <result property="autoProcessId"    column="auto_process_ID"    />
         <result property="comment"    column="comment"    />
+        <result property="parentName" column="parent_name" />
     </resultMap>
 
     <sql id="selectvitCompetenceVo">
-        select viscount_competence_code, competence_description, title_competence, std_auto_competence, auto_competence_category_ID, sap_module_ID, auto_process_ID, comment from 04_competence
+        select competence_ID, viscount_competence_code, parent_ID, competence_description, title_competence, std_auto_competence, auto_competence_category_ID, sap_module_ID, auto_process_ID, comment from 04_competence
     </sql>
+
+
+    <select id="selectvitCompetenceAll" parameterType="vitCompetence" resultMap="vitCompetenceResult">
+        <include refid="selectvitCompetenceVo"/>
+    </select>
+
+    <select id="selectvitCompetenceDescription" parameterType="vitCompetence" resultMap="vitCompetenceResult">
+        <include refid="selectvitCompetenceVo"/>
+        where competence_description = #{competenceDescription}
+    </select>
+
+    <select id="selectvitCompetenceParentId" parameterType="vitCompetence" resultMap="vitCompetenceResult">
+        <include refid="selectvitCompetenceVo"/>
+        where parent_ID = #{parentId}
+    </select>
 
     <select id="selectvitCompetenceList" parameterType="vitCompetence" resultMap="vitCompetenceResult">
         <include refid="selectvitCompetenceVo"/>
         <where>  
             <if test="competenceDescription != null  and competenceDescription != ''"> and competence_description like concat('%', #{competenceDescription}, '%')</if>
+            <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
         </where>
+        order by parent_ID
     </select>
     
-    <select id="selectvitCompetenceById" parameterType="String" resultMap="vitCompetenceResult">
-        <include refid="selectvitCompetenceVo"/>
-        where viscount_competence_code = #{viscountCompetenceCode}
+    <select id="selectvitCompetenceById" parameterType="Long" resultMap="vitCompetenceResult">
+        select t.competence_ID, t.viscount_competence_code, t.parent_ID, t.competence_description, t.title_competence, t.std_auto_competence, t.auto_competence_category_ID, t.sap_module_ID, t.auto_process_ID, t.comment, p.competence_description as parent_name
+        from 04_competence t
+        left join 04_competence p on p.competence_ID = t.parent_ID
+        where t.competence_ID = #{competenceId}
     </select>
         
-    <insert id="insertvitCompetence" parameterType="vitCompetence">
+    <insert id="insertvitCompetence" parameterType="vitCompetence" useGeneratedKeys="true" keyProperty="competenceId">
         insert into 04_competence
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="parentId != null">parent_ID,</if>
             <if test="competenceDescription != null">competence_description,</if>
             <if test="titleCompetence != null">title_competence,</if>
             <if test="stdAutoCompetence != null">std_auto_competence,</if>
@@ -45,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="parentId != null">#{parentId},</if>
             <if test="competenceDescription != null">#{competenceDescription},</if>
             <if test="titleCompetence != null">#{titleCompetence},</if>
             <if test="stdAutoCompetence != null">#{stdAutoCompetence},</if>
@@ -58,6 +82,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatevitCompetence" parameterType="vitCompetence">
         update 04_competence
         <trim prefix="SET" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">viscount_competence_code = #{viscountCompetenceCode},</if>
+            <if test="parentId != null">parent_ID = #{parentId},</if>
             <if test="competenceDescription != null">competence_description = #{competenceDescription},</if>
             <if test="titleCompetence != null">title_competence = #{titleCompetence},</if>
             <if test="stdAutoCompetence != null">std_auto_competence = #{stdAutoCompetence},</if>
@@ -66,17 +92,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="autoProcessId != null">auto_process_ID = #{autoProcessId},</if>
             <if test="comment != null">comment = #{comment},</if>
         </trim>
-        where viscount_competence_code = #{viscountCompetenceCode}
+        where competence_ID = #{competenceId}
     </update>
 
-    <delete id="deletevitCompetenceById" parameterType="String">
-        delete from 04_competence where viscount_competence_code = #{viscountCompetenceCode}
+    <delete id="deletevitCompetenceById" parameterType="Long">
+        delete from 04_competence where competence_ID = #{competenceId}
     </delete>
 
     <delete id="deletevitCompetenceByIds" parameterType="String">
-        delete from 04_competence where viscount_competence_code in 
-        <foreach item="viscountCompetenceCode" collection="array" open="(" separator="," close=")">
-            #{viscountCompetenceCode}
+        delete from 04_competence where competence_ID in 
+        <foreach item="competenceId" collection="array" open="(" separator="," close=")">
+            #{competenceId}
         </foreach>
     </delete>
 

@@ -7,17 +7,17 @@ import com.ruoyi.system.domain.vitCompetence;
  * vitCompetenceMapper接口
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 public interface vitCompetenceMapper 
 {
     /**
      * 查询vitCompetence
      * 
-     * @param viscountCompetenceCode vitCompetenceID
+     * @param competenceId vitCompetenceID
      * @return vitCompetence
      */
-    public vitCompetence selectvitCompetenceById(String viscountCompetenceCode);
+    public vitCompetence selectvitCompetenceById(Long competenceId);
 
     /**
      * 查询vitCompetence列表
@@ -46,16 +46,22 @@ public interface vitCompetenceMapper
     /**
      * 删除vitCompetence
      * 
-     * @param viscountCompetenceCode vitCompetenceID
+     * @param competenceId vitCompetenceID
      * @return 结果
      */
-    public int deletevitCompetenceById(String viscountCompetenceCode);
+    public int deletevitCompetenceById(Long competenceId);
 
     /**
      * 批量删除vitCompetence
      * 
-     * @param viscountCompetenceCodes 需要删除的数据ID
+     * @param competenceIds 需要删除的数据ID
      * @return 结果
      */
-    public int deletevitCompetenceByIds(String[] viscountCompetenceCodes);
+    public int deletevitCompetenceByIds(String[] competenceIds);
+
+    public List<vitCompetence> selectvitCompetenceAll();
+
+    public vitCompetence selectvitCompetenceDescription(String competenceDescription);
+
+    public List<vitCompetence> selectvitCompetenceParentId(Long parentId);
 }

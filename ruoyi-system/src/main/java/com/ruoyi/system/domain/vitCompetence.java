@@ -3,17 +3,20 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.TreeEntity;
 
 /**
  * vitCompetence对象 04_competence
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
-public class vitCompetence extends BaseEntity
+public class vitCompetence extends TreeEntity
 {
     private static final long serialVersionUID = 1L;
+
+    /** competenceId */
+    private Long competenceId;
 
     /** viscountCompetenceCode */
     @Excel(name = "viscountCompetenceCode")
@@ -47,6 +50,15 @@ public class vitCompetence extends BaseEntity
     @Excel(name = "comment")
     private String comment;
 
+    public void setCompetenceId(Long competenceId) 
+    {
+        this.competenceId = competenceId;
+    }
+
+    public Long getCompetenceId() 
+    {
+        return competenceId;
+    }
     public void setViscountCompetenceCode(String viscountCompetenceCode) 
     {
         this.viscountCompetenceCode = viscountCompetenceCode;
@@ -123,7 +135,9 @@ public class vitCompetence extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("competenceId", getCompetenceId())
             .append("viscountCompetenceCode", getViscountCompetenceCode())
+            .append("parentId", getParentId())
             .append("competenceDescription", getCompetenceDescription())
             .append("titleCompetence", getTitleCompetence())
             .append("stdAutoCompetence", getStdAutoCompetence())

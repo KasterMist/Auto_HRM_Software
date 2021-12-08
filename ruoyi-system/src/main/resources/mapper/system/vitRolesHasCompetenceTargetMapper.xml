@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitRolesHasCompetenceTargetMapper">
+    
+    <resultMap type="vitRolesHasCompetenceTarget" id="vitRolesHasCompetenceTargetResult">
+        <result property="rolesHasCompetenceTargetId"    column="roles_has_competence_target_ID"    />
+        <result property="viscountRolesId"    column="viscount_roles_ID"    />
+        <result property="rolesDescription"    column="roles_description"    />
+        <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="competenceDescription"    column="competence_description"    />
+        <result property="targetValue"    column="target_value"    />
+    </resultMap>
+
+    <sql id="selectvitRolesHasCompetenceTargetVo">
+        select roles_has_competence_target_ID, viscount_roles_ID, roles_description, viscount_competence_code, competence_description, target_value from 05_roles_has_competence_target
+    </sql>
+
+    <select id="selectvitRolesHasCompetenceTargetList" parameterType="vitRolesHasCompetenceTarget" resultMap="vitRolesHasCompetenceTargetResult">
+        <include refid="selectvitRolesHasCompetenceTargetVo"/>
+        <where>  
+            <if test="rolesDescription != null  and rolesDescription != ''"> and roles_description like concat('%', #{rolesDescription}, '%')</if>
+            <if test="competenceDescription != null  and competenceDescription != ''"> and competence_description like concat('%', #{competenceDescription}, '%')</if>
+            <if test="targetValue != null "> and target_value = #{targetValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitRolesHasCompetenceTargetById" parameterType="Long" resultMap="vitRolesHasCompetenceTargetResult">
+        <include refid="selectvitRolesHasCompetenceTargetVo"/>
+        where roles_has_competence_target_ID = #{rolesHasCompetenceTargetId}
+    </select>
+        
+    <insert id="insertvitRolesHasCompetenceTarget" parameterType="vitRolesHasCompetenceTarget" useGeneratedKeys="true" keyProperty="rolesHasCompetenceTargetId">
+        insert into 05_roles_has_competence_target
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viscountRolesId != null">viscount_roles_ID,</if>
+            <if test="rolesDescription != null">roles_description,</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="competenceDescription != null">competence_description,</if>
+            <if test="targetValue != null">target_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viscountRolesId != null">#{viscountRolesId},</if>
+            <if test="rolesDescription != null">#{rolesDescription},</if>
+            <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">#{competenceDescription},</if>
+            <if test="targetValue != null">#{targetValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitRolesHasCompetenceTarget" parameterType="vitRolesHasCompetenceTarget">
+        update 05_roles_has_competence_target
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="viscountRolesId != null">viscount_roles_ID = #{viscountRolesId},</if>
+            <if test="rolesDescription != null">roles_description = #{rolesDescription},</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code = #{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">competence_description = #{competenceDescription},</if>
+            <if test="targetValue != null">target_value = #{targetValue},</if>
+        </trim>
+        where roles_has_competence_target_ID = #{rolesHasCompetenceTargetId}
+    </update>
+
+    <delete id="deletevitRolesHasCompetenceTargetById" parameterType="Long">
+        delete from 05_roles_has_competence_target where roles_has_competence_target_ID = #{rolesHasCompetenceTargetId}
+    </delete>
+
+    <delete id="deletevitRolesHasCompetenceTargetByIds" parameterType="String">
+        delete from 05_roles_has_competence_target where roles_has_competence_target_ID in 
+        <foreach item="rolesHasCompetenceTargetId" collection="array" open="(" separator="," close=")">
+            #{rolesHasCompetenceTargetId}
+        </foreach>
+    </delete>
+
+</mapper>

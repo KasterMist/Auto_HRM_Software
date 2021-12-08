@@ -65,7 +65,7 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     public int insertvitStaffHasRole(vitStaffHasRole vitStaffHasRole)
     {
         vitStaff staff = vitstaffMapper.selectvitStaffByName(vitStaffHasRole.getName());
-        System.out.println(vitStaffHasRole.getRoleDescription());
+//        System.out.println(vitStaffHasRole.getRoleDescription());
         vitRoles role = vitrolesMapper.selectVitRolesDescription(vitStaffHasRole.getRoleDescription());
         vitStaffHasRole.setCode(staff.getCode());
         vitStaffHasRole.setViscountRolesId(role.getViscountRolesId());

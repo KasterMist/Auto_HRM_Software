@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.vitRoles;
  * vitRolesMapper接口
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 public interface vitRolesMapper 
 {
@@ -62,4 +62,6 @@ public interface vitRolesMapper
     public List<vitRoles> selectVitRolesAll();
 
     public vitRoles selectVitRolesDescription(String roleDescription);
+
+    public List<vitRoles> selectVitRolesParentId(Long parentId);
 }

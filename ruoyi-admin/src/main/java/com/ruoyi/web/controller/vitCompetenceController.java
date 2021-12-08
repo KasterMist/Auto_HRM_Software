@@ -17,13 +17,14 @@ import com.ruoyi.system.service.IvitCompetenceService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * vitCompetenceController
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 @Controller
 @RequestMapping("/system/vitCompetence")
@@ -42,16 +43,15 @@ public class vitCompetenceController extends BaseController
     }
 
     /**
-     * 查询vitCompetence列表
+     * 查询vitCompetence树列表
      */
     @RequiresPermissions("system:vitCompetence:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(vitCompetence vitCompetence)
+    public List<vitCompetence> list(vitCompetence vitCompetence)
     {
-        startPage();
         List<vitCompetence> list = vitCompetenceService.selectvitCompetenceList(vitCompetence);
-        return getDataTable(list);
+        return list;
     }
 
     /**
@@ -71,9 +71,13 @@ public class vitCompetenceController extends BaseController
     /**
      * 新增vitCompetence
      */
-    @GetMapping("/add")
-    public String add()
+    @GetMapping(value = { "/add/{competenceId}", "/add/" })
+    public String add(@PathVariable(value = "competenceId", required = false) Long competenceId, ModelMap mmap)
     {
+        if (StringUtils.isNotNull(competenceId))
+        {
+            mmap.put("vitCompetence", vitCompetenceService.selectvitCompetenceById(competenceId));
+        }
         return prefix + "/add";
     }
 
@@ -92,10 +96,10 @@ public class vitCompetenceController extends BaseController
     /**
      * 修改vitCompetence
      */
-    @GetMapping("/edit/{viscountCompetenceCode}")
-    public String edit(@PathVariable("viscountCompetenceCode") String viscountCompetenceCode, ModelMap mmap)
+    @GetMapping("/edit/{competenceId}")
+    public String edit(@PathVariable("competenceId") Long competenceId, ModelMap mmap)
     {
-        vitCompetence vitCompetence = vitCompetenceService.selectvitCompetenceById(viscountCompetenceCode);
+        vitCompetence vitCompetence = vitCompetenceService.selectvitCompetenceById(competenceId);
         mmap.put("vitCompetence", vitCompetence);
         return prefix + "/edit";
     }
@@ -113,14 +117,38 @@ public class vitCompetenceController extends BaseController
     }
 
     /**
-     * 删除vitCompetence
+     * 删除
      */
     @RequiresPermissions("system:vitCompetence:remove")
     @Log(title = "vitCompetence", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @GetMapping("/remove/{competenceId}")
     @ResponseBody
-    public AjaxResult remove(String ids)
+    public AjaxResult remove(@PathVariable("competenceId") Long competenceId)
     {
-        return toAjax(vitCompetenceService.deletevitCompetenceByIds(ids));
+        return toAjax(vitCompetenceService.deletevitCompetenceById(competenceId));
+    }
+
+    /**
+     * 选择vitCompetence树
+     */
+    @GetMapping(value = { "/selectVitCompetenceTree/{competenceId}", "/selectVitCompetenceTree/" })
+    public String selectVitCompetenceTree(@PathVariable(value = "competenceId", required = false) Long competenceId, ModelMap mmap)
+    {
+        if (StringUtils.isNotNull(competenceId))
+        {
+            mmap.put("vitCompetence", vitCompetenceService.selectvitCompetenceById(competenceId));
+        }
+        return prefix + "/tree";
+    }
+
+    /**
+     * 加载vitCompetence树列表
+     */
+    @GetMapping("/treeData")
+    @ResponseBody
+    public List<Ztree> treeData()
+    {
+        List<Ztree> ztrees = vitCompetenceService.selectvitCompetenceTree();
+        return ztrees;
     }
 }

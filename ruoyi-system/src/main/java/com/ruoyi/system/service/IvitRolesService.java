@@ -2,12 +2,13 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.vitRoles;
+import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * vitRolesService接口
  * 
  * @author ruoyi
- * @date 2021-12-02
+ * @date 2021-12-08
  */
 public interface IvitRolesService 
 {
@@ -59,7 +60,16 @@ public interface IvitRolesService
      */
     public int deletevitRolesById(Long roleId);
 
+    /**
+     * 查询vitRoles树列表
+     * 
+     * @return 所有vitRoles信息
+     */
+    public List<Ztree> selectvitRolesTree();
+
     public List<vitRoles> selectVitRolesAll();
 
     public vitRoles selectVitRolesDescription(String roleDescription);
+
+    public List<vitRoles> selectVitRolesParentId(Long parentId);
 }
