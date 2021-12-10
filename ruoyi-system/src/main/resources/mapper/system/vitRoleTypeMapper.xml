@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitRoleTypeMapper">
+    
+    <resultMap type="vitRoleType" id="vitRoleTypeResult">
+        <result property="roleTypeCode"    column="role_type_code"    />
+        <result property="roleTypeDescription"    column="role_type_description"    />
+    </resultMap>
+
+    <sql id="selectvitRoleTypeVo">
+        select role_type_code, role_type_description from 19_role_type
+    </sql>
+
+    <select id="selectvitRoleTypeList" parameterType="vitRoleType" resultMap="vitRoleTypeResult">
+        <include refid="selectvitRoleTypeVo"/>
+        <where>  
+            <if test="roleTypeDescription != null  and roleTypeDescription != ''"> and role_type_description = #{roleTypeDescription}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitRoleTypeById" parameterType="Long" resultMap="vitRoleTypeResult">
+        <include refid="selectvitRoleTypeVo"/>
+        where role_type_code = #{roleTypeCode}
+    </select>
+        
+    <insert id="insertvitRoleType" parameterType="vitRoleType" useGeneratedKeys="true" keyProperty="roleTypeCode">
+        insert into 19_role_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleTypeDescription != null">role_type_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleTypeDescription != null">#{roleTypeDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitRoleType" parameterType="vitRoleType">
+        update 19_role_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleTypeDescription != null">role_type_description = #{roleTypeDescription},</if>
+        </trim>
+        where role_type_code = #{roleTypeCode}
+    </update>
+
+    <delete id="deletevitRoleTypeById" parameterType="Long">
+        delete from 19_role_type where role_type_code = #{roleTypeCode}
+    </delete>
+
+    <delete id="deletevitRoleTypeByIds" parameterType="String">
+        delete from 19_role_type where role_type_code in 
+        <foreach item="roleTypeCode" collection="array" open="(" separator="," close=")">
+            #{roleTypeCode}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitCurrentCompetenceMapper">
+    
+    <resultMap type="vitCurrentCompetence" id="vitCurrentCompetenceResult">
+        <result property="currentCompetenceId"    column="current_competence_ID"    />
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="competenceDescription"    column="competence_description"    />
+        <result property="currentValue"    column="current_value"    />
+        <result property="lastValue"    column="last_value"    />
+        <result property="comment"    column="comment"    />
+    </resultMap>
+
+    <sql id="selectvitCurrentCompetenceVo">
+--         select current_competence_ID, name, code, viscount_competence_code, competence_description, current_value, last_value, comment
+--         from 06_current_competence
+        SELECT
+            06_current_competence.current_competence_ID,
+            06_current_competence.`name`,
+            06_current_competence.`code`,
+            06_current_competence.viscount_competence_code,
+            06_current_competence.competence_description,
+            06_current_competence.current_value,
+            06_current_competence.last_value,
+            06_current_competence.`comment`
+        FROM
+            06_current_competence
+    </sql>
+
+    <select id="selectvitCurrentCompetenceList" parameterType="vitCurrentCompetence" resultMap="vitCurrentCompetenceResult">
+           <include refid="selectvitCurrentCompetenceVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="competenceDescription != null  and competenceDescription != ''"> and competence_description = #{competenceDescription}</if>
+            <if test="currentValue != null  and currentValue != ''"> and current_value = #{currentValue}</if>
+            <if test="lastValue != null  and lastValue != ''"> and last_value = #{lastValue}</if>
+            <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectvitCurrentCompetenceById" parameterType="Long" resultMap="vitCurrentCompetenceResult">
+        <include refid="selectvitCurrentCompetenceVo"/>
+        where current_competence_ID = #{currentCompetenceId}
+    </select>
+        
+    <insert id="insertvitCurrentCompetence" parameterType="vitCurrentCompetence" useGeneratedKeys="true" keyProperty="currentCompetenceId">
+        insert into 06_current_competence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="code != null">code,</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="competenceDescription != null">competence_description,</if>
+            <if test="currentValue != null">current_value,</if>
+            <if test="lastValue != null">last_value,</if>
+            <if test="comment != null">comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">#{competenceDescription},</if>
+            <if test="currentValue != null">#{currentValue},</if>
+            <if test="lastValue != null">#{lastValue},</if>
+            <if test="comment != null">#{comment},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitCurrentCompetence" parameterType="vitCurrentCompetence">
+        update 06_current_competence
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code = #{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">competence_description = #{competenceDescription},</if>
+            <if test="currentValue != null">current_value = #{currentValue},</if>
+            <if test="lastValue != null">last_value = #{lastValue},</if>
+            <if test="comment != null">comment = #{comment},</if>
+        </trim>
+        where current_competence_ID = #{currentCompetenceId}
+    </update>
+
+    <delete id="deletevitCurrentCompetenceById" parameterType="Long">
+        delete from 06_current_competence where current_competence_ID = #{currentCompetenceId}
+    </delete>
+
+    <delete id="deletevitCurrentCompetenceByIds" parameterType="String">
+        delete from 06_current_competence where current_competence_ID in 
+        <foreach item="currentCompetenceId" collection="array" open="(" separator="," close=")">
+            #{currentCompetenceId}
+        </foreach>
+    </delete>
+
+</mapper>
