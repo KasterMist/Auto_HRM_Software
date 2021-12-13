@@ -58,4 +58,6 @@ public interface IvitStaffHasRoleService
      * @return 结果
      */
     public int deletevitStaffHasRoleById(Long staffHasRoleId);
+
+    public List<vitStaffHasRole> selectvitStaffHasRoleByName(String name);
 }

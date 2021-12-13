@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * vitCurrentCompetence对象 06_current_competence
  * 
  * @author ruoyi
- * @date 2021-12-10
+ * @date 2021-12-11
  */
 public class vitCurrentCompetence extends BaseEntity
 {
@@ -32,13 +32,13 @@ public class vitCurrentCompetence extends BaseEntity
     @Excel(name = "competenceDescription")
     private String competenceDescription;
 
-    /** currentValue */
-    @Excel(name = "currentValue")
-    private String currentValue;
+    /** theCurrentValue */
+    @Excel(name = "theCurrentValue")
+    private Long theCurrentValue;
 
-    /** lastValue */
-    @Excel(name = "lastValue")
-    private String lastValue;
+    /** theLastValue */
+    @Excel(name = "theLastValue")
+    private Long theLastValue;
 
     /** comment */
     @Excel(name = "comment")
@@ -89,23 +89,23 @@ public class vitCurrentCompetence extends BaseEntity
     {
         return competenceDescription;
     }
-    public void setCurrentValue(String currentValue) 
+    public void setTheCurrentValue(Long theCurrentValue) 
     {
-        this.currentValue = currentValue;
+        this.theCurrentValue = theCurrentValue;
     }
 
-    public String getCurrentValue() 
+    public Long getTheCurrentValue() 
     {
-        return currentValue;
+        return theCurrentValue;
     }
-    public void setLastValue(String lastValue) 
+    public void setTheLastValue(Long theLastValue) 
     {
-        this.lastValue = lastValue;
+        this.theLastValue = theLastValue;
     }
 
-    public String getLastValue() 
+    public Long getTheLastValue() 
     {
-        return lastValue;
+        return theLastValue;
     }
     public void setComment(String comment) 
     {
@@ -125,8 +125,8 @@ public class vitCurrentCompetence extends BaseEntity
             .append("code", getCode())
             .append("viscountCompetenceCode", getViscountCompetenceCode())
             .append("competenceDescription", getCompetenceDescription())
-            .append("currentValue", getCurrentValue())
-            .append("lastValue", getLastValue())
+            .append("theCurrentValue", getTheCurrentValue())
+            .append("theLastValue", getTheLastValue())
             .append("comment", getComment())
             .toString();
     }

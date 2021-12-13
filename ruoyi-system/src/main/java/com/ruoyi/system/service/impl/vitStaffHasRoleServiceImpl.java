@@ -111,4 +111,9 @@ public class vitStaffHasRoleServiceImpl implements IvitStaffHasRoleService
     {
         return vitStaffHasRoleMapper.deletevitStaffHasRoleById(staffHasRoleId);
     }
+
+    @Override
+    public List<vitStaffHasRole> selectvitStaffHasRoleByName(String name){
+        return vitStaffHasRoleMapper.selectvitStaffHasRoleByName(name);
+    }
 }

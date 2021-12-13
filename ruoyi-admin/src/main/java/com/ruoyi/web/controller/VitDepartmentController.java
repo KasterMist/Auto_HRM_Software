@@ -17,13 +17,14 @@ import com.ruoyi.system.service.IVitDepartmentService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * VitDepartmentController
  * 
  * @author ruoyi
- * @date 2021-11-21
+ * @date 2021-12-13
  */
 @Controller
 @RequestMapping("/system/VitDepartment")
@@ -42,16 +43,15 @@ public class VitDepartmentController extends BaseController
     }
 
     /**
-     * 查询VitDepartment列表
+     * 查询VitDepartment树列表
      */
     @RequiresPermissions("system:VitDepartment:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(VitDepartment vitDepartment)
+    public List<VitDepartment> list(VitDepartment vitDepartment)
     {
-        startPage();
         List<VitDepartment> list = vitDepartmentService.selectVitDepartmentList(vitDepartment);
-        return getDataTable(list);
+        return list;
     }
 
     /**
@@ -71,9 +71,13 @@ public class VitDepartmentController extends BaseController
     /**
      * 新增VitDepartment
      */
-    @GetMapping("/add")
-    public String add()
+    @GetMapping(value = { "/add/{departmentId}", "/add/" })
+    public String add(@PathVariable(value = "departmentId", required = false) Long departmentId, ModelMap mmap)
     {
+        if (StringUtils.isNotNull(departmentId))
+        {
+            mmap.put("vitDepartment", vitDepartmentService.selectVitDepartmentById(departmentId));
+        }
         return prefix + "/add";
     }
 
@@ -93,7 +97,7 @@ public class VitDepartmentController extends BaseController
      * 修改VitDepartment
      */
     @GetMapping("/edit/{departmentId}")
-    public String edit(@PathVariable("departmentId") Integer departmentId, ModelMap mmap)
+    public String edit(@PathVariable("departmentId") Long departmentId, ModelMap mmap)
     {
         VitDepartment vitDepartment = vitDepartmentService.selectVitDepartmentById(departmentId);
         mmap.put("vitDepartment", vitDepartment);
@@ -113,14 +117,38 @@ public class VitDepartmentController extends BaseController
     }
 
     /**
-     * 删除VitDepartment
+     * 删除
      */
     @RequiresPermissions("system:VitDepartment:remove")
     @Log(title = "VitDepartment", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @GetMapping("/remove/{departmentId}")
     @ResponseBody
-    public AjaxResult remove(String ids)
+    public AjaxResult remove(@PathVariable("departmentId") Long departmentId)
     {
-        return toAjax(vitDepartmentService.deleteVitDepartmentByIds(ids));
+        return toAjax(vitDepartmentService.deleteVitDepartmentById(departmentId));
+    }
+
+    /**
+     * 选择VitDepartment树
+     */
+    @GetMapping(value = { "/selectVitDepartmentTree/{departmentId}", "/selectVitDepartmentTree/" })
+    public String selectVitDepartmentTree(@PathVariable(value = "departmentId", required = false) Long departmentId, ModelMap mmap)
+    {
+        if (StringUtils.isNotNull(departmentId))
+        {
+            mmap.put("vitDepartment", vitDepartmentService.selectVitDepartmentById(departmentId));
+        }
+        return prefix + "/tree";
+    }
+
+    /**
+     * 加载VitDepartment树列表
+     */
+    @GetMapping("/treeData")
+    @ResponseBody
+    public List<Ztree> treeData()
+    {
+        List<Ztree> ztrees = vitDepartmentService.selectVitDepartmentTree();
+        return ztrees;
     }
 }

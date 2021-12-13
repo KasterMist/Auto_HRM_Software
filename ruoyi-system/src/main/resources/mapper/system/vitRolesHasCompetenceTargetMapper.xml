@@ -30,6 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectvitRolesHasCompetenceTargetVo"/>
         where roles_has_competence_target_ID = #{rolesHasCompetenceTargetId}
     </select>
+
+    <select id="selectvitRolesHasCompetenceTargetByRolesDescription" parameterType="String" resultMap="vitRolesHasCompetenceTargetResult">
+        <include refid="selectvitRolesHasCompetenceTargetVo"/>
+        where roles_description = #{rolesDescription}
+    </select>
         
     <insert id="insertvitRolesHasCompetenceTarget" parameterType="vitRolesHasCompetenceTarget" useGeneratedKeys="true" keyProperty="rolesHasCompetenceTargetId">
         insert into 05_roles_has_competence_target

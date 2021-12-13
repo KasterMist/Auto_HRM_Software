@@ -2,32 +2,48 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('新增vitCurrentCompetence')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+<!--    <Script src="jquery.min.js"></Script>-->
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-vitCurrentCompetence-add">
             <div class="form-group">    
                 <label class="col-sm-3 control-label">name：</label>
-                <div class="col-sm-8">
-                    <input name="name" class="form-control" type="text">
-                </div>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="name" class="form-control" type="text">-->
+<!--                </div>-->
+                    <div class="col-sm-8">
+                        <select name="name" id="name" lay-verify="required" class="form-control">
+                            <option th:each="vitStaff:${vitStaffs}" th:value="${vitStaff.name}"
+                                    th:text="${vitStaff.name}"></option>
+                        </select>
+                    </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">competenceDescription：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="competenceDescription" class="form-control" type="text">-->
+<!--                </div>-->
                 <div class="col-sm-8">
-                    <input name="competenceDescription" class="form-control" type="text">
+                    <select name="competenceDescription" id="competenceDescription" lay-verify="required" class="form-control">
+                        <option></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">currentValue：</label>
+                <label class="col-sm-3 control-label">theCurrentValue：</label>
                 <div class="col-sm-8">
-                    <input name="currentValue" class="form-control" type="text">
+                    <input name="theCurrentValue" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">lastValue：</label>
+                <label class="col-sm-3 control-label">theLastValue：</label>
                 <div class="col-sm-8">
-                    <input name="lastValue" class="form-control" type="text">
+                    <input name="theLastValue" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
@@ -39,17 +55,73 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
     <script th:inline="javascript">
         var prefix = ctx + "system/vitCurrentCompetence"
+
         $("#form-vitCurrentCompetence-add").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/add", $('#form-vitCurrentCompetence-add').serialize());
+                data = $('#form-vitCurrentCompetence-add').serializeArray()
+                var vitStaffnames = $.form.selectSelects("staffName");
+                data.push({"name": "vitStaffnames", "value": vitStaffnames});
+                // $.operate.save(prefix + "/add", $('#form-vitCurrentCompetence-add').serialize());
+                $.operate.save(prefix + "/add", data);
             }
         }
+
+        <!--页面加载时运行此函数  放在最前端 -->
+        // $(document).ready(function() {
+
+            <!-- 对下拉选择列表进行监听-->
+            $("#name").change(function () {
+
+                // 捕获选择框中的选中项的value值  还有另外一种写法
+                var t = $("#name").val();
+                // var t = document.getElementById('name').value;
+
+                <!--异步请求-->
+                $.ajax({
+
+                    <!--请求路径，与后端对应-->
+                    url: prefix + "/select",
+
+                    <!--请求类型-->
+                    type: "get",
+
+                    <!--期待的返回数据类型-->
+                    dataType: "json",
+                    <!--传递给后端的数据  "regionId"是传递给后端的参数名   t是本页面的参数-->
+                    data: {
+                        "name": t
+                    },
+
+                    <!--前端接收数据成功是执行的该函数-->
+                    success: function (data) {
+                        <!--清空下拉框中的缓存-->
+                        $("#competenceDescription").empty();
+
+                        <!--避免下拉框的值不变-->
+                        $("#competenceDescription").append("<option></option>");
+
+                        <!--使用循环解析后端传来的数据，并用使用js动态拼接html语言-->
+                        for (var i = 0; i < data.length; i++)
+                            // $("#competenceDescription").append("<option th:value='" + data[i] + "'th:text=" + data[i] + "'>" + "</option>");
+                            $("#competenceDescription").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+
+                    }
+
+                });
+            });
+        // });
+
+
     </script>
 </body>
 </html>

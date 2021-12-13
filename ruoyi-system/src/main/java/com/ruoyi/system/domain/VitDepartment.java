@@ -3,20 +3,20 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.TreeEntity;
 
 /**
  * VitDepartment对象 23_department
  * 
  * @author ruoyi
- * @date 2021-11-21
+ * @date 2021-12-13
  */
-public class VitDepartment extends BaseEntity
+public class VitDepartment extends TreeEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** Department ID */
-    private Integer departmentId;
+    private Long departmentId;
 
     /** Department Code */
     private String departmentCode;
@@ -29,12 +29,12 @@ public class VitDepartment extends BaseEntity
     @Excel(name = "Comment")
     private String comment;
 
-    public void setDepartmentId(Integer departmentId) 
+    public void setDepartmentId(Long departmentId) 
     {
         this.departmentId = departmentId;
     }
 
-    public Integer getDepartmentId() 
+    public Long getDepartmentId() 
     {
         return departmentId;
     }
@@ -71,6 +71,7 @@ public class VitDepartment extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("departmentId", getDepartmentId())
             .append("departmentCode", getDepartmentCode())
+            .append("parentId", getParentId())
             .append("departmentName", getDepartmentName())
             .append("comment", getComment())
             .toString();

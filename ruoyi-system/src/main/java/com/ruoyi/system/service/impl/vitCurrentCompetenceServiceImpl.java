@@ -1,6 +1,12 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.vitCompetence;
+import com.ruoyi.system.domain.vitStaff;
+import com.ruoyi.system.mapper.vitCompetenceMapper;
+import com.ruoyi.system.mapper.vitRolesHasCompetenceTargetMapper;
+import com.ruoyi.system.mapper.vitStaffMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.vitCurrentCompetenceMapper;
@@ -12,7 +18,7 @@ import com.ruoyi.common.core.text.Convert;
  * vitCurrentCompetenceService业务层处理
  * 
  * @author ruoyi
- * @date 2021-12-10
+ * @date 2021-12-11
  */
 @Service
 public class vitCurrentCompetenceServiceImpl implements IvitCurrentCompetenceService 
@@ -20,6 +26,12 @@ public class vitCurrentCompetenceServiceImpl implements IvitCurrentCompetenceSer
     @Autowired
     private vitCurrentCompetenceMapper vitCurrentCompetenceMapper;
 
+
+    @Autowired
+    private vitStaffMapper vitstaffMapper;
+
+    @Autowired
+    private vitCompetenceMapper vitCompetenceMapper;
     /**
      * 查询vitCurrentCompetence
      * 
@@ -53,6 +65,11 @@ public class vitCurrentCompetenceServiceImpl implements IvitCurrentCompetenceSer
     @Override
     public int insertvitCurrentCompetence(vitCurrentCompetence vitCurrentCompetence)
     {
+        vitStaff staff = vitstaffMapper.selectvitStaffByName(vitCurrentCompetence.getName());
+        vitCurrentCompetence.setCode(staff.getCode());
+        vitCompetence competence = vitCompetenceMapper.selectvitCompetenceDescription(vitCurrentCompetence.getCompetenceDescription());
+        vitCurrentCompetence.setViscountCompetenceCode(competence.getViscountCompetenceCode());
+
         return vitCurrentCompetenceMapper.insertvitCurrentCompetence(vitCurrentCompetence);
     }
 
@@ -65,6 +82,11 @@ public class vitCurrentCompetenceServiceImpl implements IvitCurrentCompetenceSer
     @Override
     public int updatevitCurrentCompetence(vitCurrentCompetence vitCurrentCompetence)
     {
+        vitStaff staff = vitstaffMapper.selectvitStaffByName(vitCurrentCompetence.getName());
+        vitCurrentCompetence.setCode(staff.getCode());
+        vitCompetence competence = vitCompetenceMapper.selectvitCompetenceDescription(vitCurrentCompetence.getCompetenceDescription());
+        vitCurrentCompetence.setViscountCompetenceCode(competence.getViscountCompetenceCode());
+
         return vitCurrentCompetenceMapper.updatevitCurrentCompetence(vitCurrentCompetence);
     }
 

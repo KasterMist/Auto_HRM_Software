@@ -7,16 +7,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="VitDepartment" id="VitDepartmentResult">
         <result property="departmentId"    column="department_ID"    />
         <result property="departmentCode"    column="department_code"    />
+        <result property="parentId"    column="parent_ID"    />
         <result property="departmentName"    column="department_name"    />
         <result property="comment"    column="comment"    />
+        <result property="parentName" column="parent_name" />
     </resultMap>
 
     <sql id="selectVitDepartmentVo">
-        select department_ID, department_code, department_name, comment from 23_department
+        select department_ID, department_code, parent_ID, department_name, comment from 23_department
     </sql>
 
     <select id="selectVitDepartmentAll" parameterType="VitDepartment" resultMap="VitDepartmentResult">
         <include refid="selectVitDepartmentVo"/>
+    </select>
+
+    <select id="selectVitDepartmentParentId" parameterType="Long" resultMap="VitDepartmentResult">
+        <include refid="selectVitDepartmentVo"/>
+        where parent_ID = #{parentId}
     </select>
 
     <select id="selectVitDepartmentList" parameterType="VitDepartment" resultMap="VitDepartmentResult">
@@ -25,22 +32,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="departmentName != null  and departmentName != ''"> and department_name like concat('%', #{departmentName}, '%')</if>
             <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
         </where>
+        order by parent_ID
     </select>
     
-    <select id="selectVitDepartmentById" parameterType="Integer" resultMap="VitDepartmentResult">
-        <include refid="selectVitDepartmentVo"/>
-        where department_ID = #{departmentId}
+    <select id="selectVitDepartmentById" parameterType="Long" resultMap="VitDepartmentResult">
+        select t.department_ID, t.department_code, t.parent_ID, t.department_name, t.comment, p.department_name as parent_name
+        from 23_department t
+        left join 23_department p on p.department_ID = t.parent_ID
+        where t.department_ID = #{departmentId}
     </select>
         
     <insert id="insertVitDepartment" parameterType="VitDepartment" useGeneratedKeys="true" keyProperty="departmentId">
         insert into 23_department
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="departmentCode != null">department_code,</if>
+            <if test="parentId != null">parent_ID,</if>
             <if test="departmentName != null">department_name,</if>
             <if test="comment != null">comment,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="departmentCode != null">#{departmentCode},</if>
+            <if test="parentId != null">#{parentId},</if>
             <if test="departmentName != null">#{departmentName},</if>
             <if test="comment != null">#{comment},</if>
          </trim>
@@ -50,13 +62,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update 23_department
         <trim prefix="SET" suffixOverrides=",">
             <if test="departmentCode != null">department_code = #{departmentCode},</if>
+            <if test="parentId != null">parent_ID = #{parentId},</if>
             <if test="departmentName != null">department_name = #{departmentName},</if>
             <if test="comment != null">comment = #{comment},</if>
         </trim>
         where department_ID = #{departmentId}
     </update>
 
-    <delete id="deleteVitDepartmentById" parameterType="Integer">
+    <delete id="deleteVitDepartmentById" parameterType="Long">
         delete from 23_department where department_ID = #{departmentId}
     </delete>
 

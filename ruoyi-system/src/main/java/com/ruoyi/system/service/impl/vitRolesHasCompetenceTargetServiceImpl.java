@@ -112,4 +112,9 @@ public class vitRolesHasCompetenceTargetServiceImpl implements IvitRolesHasCompe
     {
         return vitRolesHasCompetenceTargetMapper.deletevitRolesHasCompetenceTargetById(rolesHasCompetenceTargetId);
     }
+
+    @Override
+    public List<vitRolesHasCompetenceTarget> selectvitRolesHasCompetenceTargetByRolesDescription(String rolesDescription){
+        return vitRolesHasCompetenceTargetMapper.selectvitRolesHasCompetenceTargetByRolesDescription(rolesDescription);
+    }
 }

@@ -58,4 +58,6 @@ public interface vitRolesHasCompetenceTargetMapper
      * @return 结果
      */
     public int deletevitRolesHasCompetenceTargetByIds(String[] rolesHasCompetenceTargetIds);
+
+    public List<vitRolesHasCompetenceTarget> selectvitRolesHasCompetenceTargetByRolesDescription(String rolesDescription);
 }

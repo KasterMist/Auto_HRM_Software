@@ -1,6 +1,14 @@
 package com.ruoyi.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.system.domain.vitRolesHasCompetenceTarget;
+import com.ruoyi.system.domain.vitStaff;
+import com.ruoyi.system.domain.vitStaffHasRole;
+import com.ruoyi.system.service.IvitRolesHasCompetenceTargetService;
+import com.ruoyi.system.service.IvitStaffHasRoleService;
+import com.ruoyi.system.service.IvitStaffService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +31,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * vitCurrentCompetenceController
  * 
  * @author ruoyi
- * @date 2021-12-10
+ * @date 2021-12-11
  */
 @Controller
 @RequestMapping("/system/vitCurrentCompetence")
@@ -33,6 +41,15 @@ public class vitCurrentCompetenceController extends BaseController
 
     @Autowired
     private IvitCurrentCompetenceService vitCurrentCompetenceService;
+
+    @Autowired
+    private IvitStaffService vitStaffService;
+
+    @Autowired
+    public IvitStaffHasRoleService vitStaffHasRole;
+
+    @Autowired
+    public IvitRolesHasCompetenceTargetService vitRolesHasCompetenceTarget;
 
     @RequiresPermissions("system:vitCurrentCompetence:view")
     @GetMapping()
@@ -54,6 +71,30 @@ public class vitCurrentCompetenceController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/select")
+    @ResponseBody
+    public List<String> getCompetenceDescriptionByStaffName(String name){
+        List<vitStaffHasRole> staffHasRoleList = vitStaffHasRole.selectvitStaffHasRoleByName(name);
+        List<String> roleList = new ArrayList<String>();
+        List<String> competenceList = new ArrayList<String>();
+
+        for(vitStaffHasRole staffinfo: staffHasRoleList){
+            if(!roleList.contains(staffinfo.getRoleDescription())){
+                roleList.add(staffinfo.getRoleDescription());
+            }
+        }
+        for(String roleName: roleList){
+            List<vitRolesHasCompetenceTarget> RolesHasCompetenceTargetList = vitRolesHasCompetenceTarget.selectvitRolesHasCompetenceTargetByRolesDescription(roleName);
+            for(vitRolesHasCompetenceTarget rolesHasCompetenceTarget: RolesHasCompetenceTargetList){
+                if(!competenceList.contains(rolesHasCompetenceTarget.getCompetenceDescription())){
+                    competenceList.add(rolesHasCompetenceTarget.getCompetenceDescription());
+                }
+            }
+        }
+        System.out.println("once");
+        return competenceList;
+    }
+
     /**
      * 导出vitCurrentCompetence列表
      */
@@ -72,8 +113,10 @@ public class vitCurrentCompetenceController extends BaseController
      * 新增vitCurrentCompetence
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
+        mmap.put("vitStaffs", vitStaffList);
         return prefix + "/add";
     }
 
@@ -97,6 +140,9 @@ public class vitCurrentCompetenceController extends BaseController
     {
         vitCurrentCompetence vitCurrentCompetence = vitCurrentCompetenceService.selectvitCurrentCompetenceById(currentCompetenceId);
         mmap.put("vitCurrentCompetence", vitCurrentCompetence);
+
+        List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
+        mmap.put("vitStaffs", vitStaffList);
         return prefix + "/edit";
     }
 

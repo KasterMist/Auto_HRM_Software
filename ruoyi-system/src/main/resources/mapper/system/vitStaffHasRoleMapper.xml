@@ -34,6 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectvitStaffHasRoleVo"/>
         where staff_has_role_ID = #{staffHasRoleId}
     </select>
+
+    <select id="selectvitStaffHasRoleByName" parameterType="String" resultMap="vitStaffHasRoleResult">
+        <include refid="selectvitStaffHasRoleVo"/>
+        where name = #{name}
+    </select>
         
     <insert id="insertvitStaffHasRole" parameterType="vitStaffHasRole" useGeneratedKeys="true" keyProperty="staffHasRoleId">
         insert into 03_staff_has_role

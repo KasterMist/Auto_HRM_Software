@@ -58,4 +58,7 @@ public interface vitStaffHasRoleMapper
      * @return 结果
      */
     public int deletevitStaffHasRoleByIds(String[] staffHasRoleIds);
+
+
+    public List<vitStaffHasRole> selectvitStaffHasRoleByName(String name);
 }

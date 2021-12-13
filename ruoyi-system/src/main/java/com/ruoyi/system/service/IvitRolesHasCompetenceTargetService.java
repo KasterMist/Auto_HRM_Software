@@ -58,4 +58,6 @@ public interface IvitRolesHasCompetenceTargetService
      * @return 结果
      */
     public int deletevitRolesHasCompetenceTargetById(Long rolesHasCompetenceTargetId);
+
+    public List<vitRolesHasCompetenceTarget> selectvitRolesHasCompetenceTargetByRolesDescription(String rolesDescription);
 }

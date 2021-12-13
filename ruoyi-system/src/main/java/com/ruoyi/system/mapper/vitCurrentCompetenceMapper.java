@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.vitCurrentCompetence;
  * vitCurrentCompetenceMapper接口
  * 
  * @author ruoyi
- * @date 2021-12-10
+ * @date 2021-12-11
  */
 public interface vitCurrentCompetenceMapper 
 {

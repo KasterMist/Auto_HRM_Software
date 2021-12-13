@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.VitDepartment;
  * VitDepartmentMapper接口
  * 
  * @author ruoyi
- * @date 2021-11-21
+ * @date 2021-12-13
  */
 public interface VitDepartmentMapper 
 {
@@ -17,7 +17,7 @@ public interface VitDepartmentMapper
      * @param departmentId VitDepartmentID
      * @return VitDepartment
      */
-    public VitDepartment selectVitDepartmentById(Integer departmentId);
+    public VitDepartment selectVitDepartmentById(Long departmentId);
 
     /**
      * 查询VitDepartment列表
@@ -49,7 +49,7 @@ public interface VitDepartmentMapper
      * @param departmentId VitDepartmentID
      * @return 结果
      */
-    public int deleteVitDepartmentById(Integer departmentId);
+    public int deleteVitDepartmentById(Long departmentId);
 
     /**
      * 批量删除VitDepartment
@@ -61,4 +61,5 @@ public interface VitDepartmentMapper
 
     public List<VitDepartment> selectVitDepartmentAll();
 
+    public List<VitDepartment> selectVitDepartmentParentId(Long parentId);
 }
