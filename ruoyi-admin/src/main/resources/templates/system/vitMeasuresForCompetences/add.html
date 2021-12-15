@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增vitMeasuresForCompetences')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vitMeasuresForCompetences-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">competenceDescription：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="competenceDescription" class="form-control" type="text">-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="competenceDescription" id="competenceDescription" lay-verify="required" class="form-control">
+                        <option th:each="vitCompetence:${vitCompetences}" th:value="${vitCompetence.competenceDescription}"
+                                th:text="${vitCompetence.competenceDescription}"></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">target：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="target" class="form-control" type="text">-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="target" id="target" lay-verify="required" class="form-control">
+                        <option value="0">The defalt value is 0</option>
+                        <option th:each="vitMeasureStep:${vitMeasureSteps}" th:value="${vitMeasureStep.target}"
+                                th:text="${vitMeasureStep.target}"></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">measureTypeCode：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="measureTypeCode" class="form-control" type="text">-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="measureTypeCode" id="measureTypeCode" lay-verify="required" class="form-control">
+                        <option th:each="vitMeasureType:${vitMeasureTypes}" th:value="${vitMeasureType.measureTypeId}"
+                                th:text="${vitMeasureType.measureDescription}"></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">comment：</label>
+                <div class="col-sm-8">
+                    <input name="comment" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">active：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="active" class="form-control" type="text">-->
+<!--                </div>-->
+                <div class="col-sm-9">
+                    <label class="radio-box">
+                        <input type="radio" checked="" value="1" id="optionsRadios1" name="active">Yes</label>
+                    <label class="radio-box">
+                        <input type="radio" value="0" id="optionsRadios2" name="active">No</label>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vitMeasuresForCompetences"
+        $("#form-vitMeasuresForCompetences-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                data = $('#form-vitMeasuresForCompetences-add').serializeArray()
+
+                var vitCompetences = $.form.selectSelects("competenceDescription");
+                data.push({"name": "vitCompetences", "value": vitCompetences});
+                var vitMeasureSteps = $.form.selectSelects("target");
+                data.push({"name": "vitMeasureSteps", "value": vitMeasureSteps});
+                var vitMeasureTypes = $.form.selectSelects("measureTypeCode");
+                data.push({"name": "vitMeasureTypes", "value": vitMeasureTypes});
+
+                // $.operate.save(prefix + "/add", $('#form-vitMeasuresForCompetences-add').serialize());
+                $.operate.save(prefix + "/add", data);
+            }
+        }
+    </script>
+</body>
+</html>

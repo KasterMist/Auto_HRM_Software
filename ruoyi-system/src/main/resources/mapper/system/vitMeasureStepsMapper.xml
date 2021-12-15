@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitMeasureStepsMapper">
+    
+    <resultMap type="vitMeasureSteps" id="vitMeasureStepsResult">
+        <result property="measureId"    column="measure_ID"    />
+        <result property="target"    column="target"    />
+    </resultMap>
+
+    <sql id="selectvitMeasureStepsVo">
+        select measure_ID, target from 10_measure_steps
+    </sql>
+
+    <select id="selectvitMeasureStepsAll" parameterType="vitMeasureSteps" resultMap="vitMeasureStepsResult">
+        <include refid="selectvitMeasureStepsVo"/>
+    </select>
+
+
+    <select id="selectvitMeasureStepsList" parameterType="vitMeasureSteps" resultMap="vitMeasureStepsResult">
+        <include refid="selectvitMeasureStepsVo"/>
+        <where>  
+            <if test="target != null  and target != ''"> and target = #{target}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitMeasureStepsById" parameterType="Long" resultMap="vitMeasureStepsResult">
+        <include refid="selectvitMeasureStepsVo"/>
+        where measure_ID = #{measureId}
+    </select>
+        
+    <insert id="insertvitMeasureSteps" parameterType="vitMeasureSteps">
+        insert into 10_measure_steps
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measureId != null">measure_ID,</if>
+            <if test="target != null">target,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measureId != null">#{measureId},</if>
+            <if test="target != null">#{target},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitMeasureSteps" parameterType="vitMeasureSteps">
+        update 10_measure_steps
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="target != null">target = #{target},</if>
+        </trim>
+        where measure_ID = #{measureId}
+    </update>
+
+    <delete id="deletevitMeasureStepsById" parameterType="Long">
+        delete from 10_measure_steps where measure_ID = #{measureId}
+    </delete>
+
+    <delete id="deletevitMeasureStepsByIds" parameterType="String">
+        delete from 10_measure_steps where measure_ID in 
+        <foreach item="measureId" collection="array" open="(" separator="," close=")">
+            #{measureId}
+        </foreach>
+    </delete>
+
+</mapper>

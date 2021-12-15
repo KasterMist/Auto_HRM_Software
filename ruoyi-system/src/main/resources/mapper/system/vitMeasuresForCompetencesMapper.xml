@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitMeasuresForCompetencesMapper">
+    
+    <resultMap type="vitMeasuresForCompetences" id="vitMeasuresForCompetencesResult">
+        <result property="viscountCompetenceId"    column="viscount_competence_ID"    />
+        <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="competenceDescription"    column="competence_description"    />
+        <result property="target"    column="target"    />
+        <result property="measureTypeCode"    column="measure_type_code"    />
+        <result property="comment"    column="comment"    />
+        <result property="active"    column="active"    />
+    </resultMap>
+
+    <sql id="selectvitMeasuresForCompetencesVo">
+        select viscount_competence_ID, viscount_competence_code, competence_description, target, measure_type_code, comment, active from 11_standard_measures_for_competences
+    </sql>
+
+    <select id="selectvitMeasuresForCompetencesList" parameterType="vitMeasuresForCompetences" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+        <where>  
+            <if test="competenceDescription != null  and competenceDescription != ''"> and competence_description like concat('%', #{competenceDescription}, '%')</if>
+            <if test="target != null "> and target = #{target}</if>
+            <if test="measureTypeCode != null "> and measure_type_code = #{measureTypeCode}</if>
+            <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
+            <if test="active != null  and active != ''"> and active = #{active}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitMeasuresForCompetencesById" parameterType="Long" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+        where viscount_competence_ID = #{viscountCompetenceId}
+    </select>
+        
+    <insert id="insertvitMeasuresForCompetences" parameterType="vitMeasuresForCompetences" useGeneratedKeys="true" keyProperty="viscountCompetenceId">
+        insert into 11_standard_measures_for_competences
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="competenceDescription != null">competence_description,</if>
+            <if test="target != null">target,</if>
+            <if test="measureTypeCode != null">measure_type_code,</if>
+            <if test="comment != null">comment,</if>
+            <if test="active != null">active,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">#{competenceDescription},</if>
+            <if test="target != null">#{target},</if>
+            <if test="measureTypeCode != null">#{measureTypeCode},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="active != null">#{active},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitMeasuresForCompetences" parameterType="vitMeasuresForCompetences">
+        update 11_standard_measures_for_competences
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="viscountCompetenceCode != null">viscount_competence_code = #{viscountCompetenceCode},</if>
+            <if test="competenceDescription != null">competence_description = #{competenceDescription},</if>
+            <if test="target != null">target = #{target},</if>
+            <if test="measureTypeCode != null">measure_type_code = #{measureTypeCode},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="active != null">active = #{active},</if>
+        </trim>
+        where viscount_competence_ID = #{viscountCompetenceId}
+    </update>
+
+    <delete id="deletevitMeasuresForCompetencesById" parameterType="Long">
+        delete from 11_standard_measures_for_competences where viscount_competence_ID = #{viscountCompetenceId}
+    </delete>
+
+    <delete id="deletevitMeasuresForCompetencesByIds" parameterType="String">
+        delete from 11_standard_measures_for_competences where viscount_competence_ID in 
+        <foreach item="viscountCompetenceId" collection="array" open="(" separator="," close=")">
+            #{viscountCompetenceId}
+        </foreach>
+    </delete>
+
+</mapper>

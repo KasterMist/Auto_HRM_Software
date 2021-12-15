@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitMeasureTypeMapper">
+    
+    <resultMap type="vitMeasureType" id="vitMeasureTypeResult">
+        <result property="measureTypeId"    column="measure_type_ID"    />
+        <result property="measureDescription"    column="measure_description"    />
+        <result property="offWork"    column="off_work"    />
+        <result property="selfEffort"    column="self_effort"    />
+        <result property="comment"    column="comment"    />
+    </resultMap>
+
+    <sql id="selectvitMeasureTypeVo">
+        select measure_type_ID, measure_description, off_work, self_effort, comment from 09_measure_type
+    </sql>
+
+    <select id="selectvitMeasureTypeAll" parameterType="vitMeasureType" resultMap="vitMeasureTypeResult">
+        <include refid="selectvitMeasureTypeVo"/>
+    </select>
+
+
+    <select id="selectvitMeasureTypeList" parameterType="vitMeasureType" resultMap="vitMeasureTypeResult">
+        <include refid="selectvitMeasureTypeVo"/>
+        <where>  
+            <if test="measureDescription != null  and measureDescription != ''"> and measure_description like concat('%', #{measureDescription}, '%')</if>
+            <if test="offWork != null  and offWork != ''"> and off_work = #{offWork}</if>
+            <if test="selfEffort != null  and selfEffort != ''"> and self_effort = #{selfEffort}</if>
+            <if test="comment != null  and comment != ''"> and comment like concat('%', #{comment}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectvitMeasureTypeById" parameterType="Long" resultMap="vitMeasureTypeResult">
+        <include refid="selectvitMeasureTypeVo"/>
+        where measure_type_ID = #{measureTypeId}
+    </select>
+        
+    <insert id="insertvitMeasureType" parameterType="vitMeasureType" useGeneratedKeys="true" keyProperty="measureTypeId">
+        insert into 09_measure_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measureDescription != null">measure_description,</if>
+            <if test="offWork != null">off_work,</if>
+            <if test="selfEffort != null">self_effort,</if>
+            <if test="comment != null">comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measureDescription != null">#{measureDescription},</if>
+            <if test="offWork != null">#{offWork},</if>
+            <if test="selfEffort != null">#{selfEffort},</if>
+            <if test="comment != null">#{comment},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitMeasureType" parameterType="vitMeasureType">
+        update 09_measure_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measureDescription != null">measure_description = #{measureDescription},</if>
+            <if test="offWork != null">off_work = #{offWork},</if>
+            <if test="selfEffort != null">self_effort = #{selfEffort},</if>
+            <if test="comment != null">comment = #{comment},</if>
+        </trim>
+        where measure_type_ID = #{measureTypeId}
+    </update>
+
+    <delete id="deletevitMeasureTypeById" parameterType="Long">
+        delete from 09_measure_type where measure_type_ID = #{measureTypeId}
+    </delete>
+
+    <delete id="deletevitMeasureTypeByIds" parameterType="String">
+        delete from 09_measure_type where measure_type_ID in 
+        <foreach item="measureTypeId" collection="array" open="(" separator="," close=")">
+            #{measureTypeId}
+        </foreach>
+    </delete>
+
+</mapper>
