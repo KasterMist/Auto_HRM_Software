@@ -18,6 +18,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select viscount_competence_ID, viscount_competence_code, competence_description, target, measure_type_code, comment, active from 11_standard_measures_for_competences
     </sql>
 
+    <select id="selectvitMeasuresForCompetencesAll" parameterType="vitMeasuresForCompetences" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+    </select>
+
+    <select id="selectvitMeasuresForCompetencesByCompetenceCode" parameterType="String" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+        where viscount_competence_code = #{viscountCompetenceCode}
+    </select>
+
+    <select id="selectvitMeasuresForCompetencesByDescription" parameterType="String" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+        where competence_description = #{competenceDesctiption}
+    </select>
+
+    <select id="selectvitMeasuresForCompetencesByMeasureTypeCode" parameterType="Integer" resultMap="vitMeasuresForCompetencesResult">
+        <include refid="selectvitMeasuresForCompetencesVo"/>
+        where measure_type_code = #{measureTypeCode}
+    </select>
+
+
+
     <select id="selectvitMeasuresForCompetencesList" parameterType="vitMeasuresForCompetences" resultMap="vitMeasuresForCompetencesResult">
         <include refid="selectvitMeasuresForCompetencesVo"/>
         <where>  

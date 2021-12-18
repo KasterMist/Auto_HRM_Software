@@ -58,4 +58,8 @@ public interface IvitCurrentCompetenceService
      * @return 结果
      */
     public int deletevitCurrentCompetenceById(Long currentCompetenceId);
+
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceAll();
+
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceByCode(String code);
 }

@@ -58,4 +58,12 @@ public interface vitMeasuresForCompetencesMapper
      * @return 结果
      */
     public int deletevitMeasuresForCompetencesByIds(String[] viscountCompetenceIds);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesAll();
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByDescription(String competenceDescription);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByMeasureTypeCode(int measureTypeCode);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByCompetenceCode(String viscountCompetenceCode);
 }

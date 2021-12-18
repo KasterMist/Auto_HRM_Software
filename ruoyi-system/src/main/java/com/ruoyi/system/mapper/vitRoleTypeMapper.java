@@ -58,4 +58,6 @@ public interface vitRoleTypeMapper
      * @return 结果
      */
     public int deletevitRoleTypeByIds(String[] roleTypeCodes);
+
+    public List<vitRoleType> selectvitRoleTypeAll();
 }

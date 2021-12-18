@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增vitAgreedMeasurePlan')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: summernote-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vitAgreedMeasurePlan-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">code：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="code" class="form-control" type="text">-->
+<!--                </div>-->
+
+<!--                <div class="col-sm-8">-->
+<!--                    <select name="code" id="code" lay-verify="required" class="form-control">-->
+<!--                        <option th:each="vitCurrentCompetence:${vitCurrentCompetences}" th:value="${vitCurrentCompetence.code}"-->
+<!--                                th:text="${vitCurrentCompetence.name}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="code" id="code" lay-verify="required" class="form-control">
+                        <option th:each="vitStaff:${vitStaffs}" th:value="${vitStaff.code}"
+                                th:text="${vitStaff.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">viscountCompetenceCode：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="viscountCompetenceCode" class="form-control" type="text">-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="viscountCompetenceCode" id="viscountCompetenceCode" lay-verify="required" class="form-control">
+                        <option></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">measureTypeSingle：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="measureTypeSingle" class="form-control" type="text">-->
+<!--                </div>-->
+
+                <div class="col-sm-8">
+                    <select name="measureTypeSingle" id="measureTypeSingle" lay-verify="required" class="form-control">
+                        <option></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">measureTarget：</label>
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="measureTarget" class="form-control" type="text">-->
+<!--                </div>-->
+                <div class="col-sm-8">
+                    <select name="measureTarget" id="measureTarget" lay-verify="required" class="form-control">
+                        <option></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">measureContent：</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control" name="measureContent">
+                    <div class="summernote" id="measureContent"></div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">comment：</label>
+                <div class="col-sm-8">
+                    <input name="comment" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">plannedTime：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="plannedTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">executedTime：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="executedTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">location：</label>
+                <div class="col-sm-8">
+                    <input name="location" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vitAgreedMeasurePlan"
+        $("#form-vitAgreedMeasurePlan-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                data = $('#form-vitAgreedMeasurePlan-add').serializeArray()
+                var vitStaffnames = $.form.selectSelects("staffName");
+                data.push({"name": "vitStaffnames", "value": vitStaffnames});
+
+                // $.operate.save(prefix + "/add", $('#form-vitAgreedMeasurePlan-add').serialize());
+                $.operate.save(prefix + "/add", data);
+            }
+        }
+
+        <!-- 对下拉选择列表进行监听-->
+        $("#code").change(function () {
+            // 捕获选择框中的选中项的value值  还有另外一种写法
+            var t = $("#code").val();
+            // var t = document.getElementById('name').value;
+            <!--异步请求-->
+            $.ajax({
+                <!--请求路径，与后端对应-->
+                url: prefix + "/select1",
+                <!--请求类型-->
+                type: "get",
+                <!--期待的返回数据类型-->
+                dataType: "json",
+                <!--传递给后端的数据  "regionId"是传递给后端的参数名   t是本页面的参数-->
+                data: {
+                    "code": t
+                },
+                <!--前端接收数据成功是执行的该函数-->
+                success: function (data) {
+                    <!--清空下拉框中的缓存-->
+                    $("#viscountCompetenceCode").empty();
+
+                    $("#measureTypeSingle").empty();
+
+                    $("#measureTarget").empty();
+                    <!--避免下拉框的值不变-->
+                    $("#viscountCompetenceCode").append("<option></option>");
+                    <!--使用循环解析后端传来的数据，并用使用js动态拼接html语言-->
+                    for (var i = 0; i < data.length; i++)
+                        // $("#competenceDescription").append("<option th:value='" + data[i] + "'th:text=" + data[i] + "'>" + "</option>");
+                        $("#viscountCompetenceCode").append("<option value='" + data[i].split(",")[1] + "'>" + data[i].split(",")[0] + "</option>");
+                }
+            });
+        });
+
+
+        <!-- 对下拉选择列表进行监听-->
+        $("#viscountCompetenceCode").change(function () {
+            // 捕获选择框中的选中项的value值  还有另外一种写法
+            var t = $("#viscountCompetenceCode").val();
+            // var t = document.getElementById('name').value;
+            <!--异步请求-->
+            $.ajax({
+                <!--请求路径，与后端对应-->
+                url: prefix + "/select2",
+                <!--请求类型-->
+                type: "get",
+                <!--期待的返回数据类型-->
+                dataType: "json",
+                <!--传递给后端的数据  "regionId"是传递给后端的参数名   t是本页面的参数-->
+                data: {
+                    "viscountCompetenceCode": t
+                },
+                <!--前端接收数据成功是执行的该函数-->
+                success: function (data) {
+                    <!--清空下拉框中的缓存-->
+
+                    $("#measureTypeSingle").empty();
+
+                    $("#measureTarget").empty();
+                    <!--避免下拉框的值不变-->
+                    $("#measureTypeSingle").append("<option></option>");
+                    <!--使用循环解析后端传来的数据，并用使用js动态拼接html语言-->
+                    for (var i = 0; i < data.length; i++)
+                        // $("#competenceDescription").append("<option th:value='" + data[i] + "'th:text=" + data[i] + "'>" + "</option>");
+                        $("#measureTypeSingle").append("<option value='" + data[i].split(",")[1] + "'>" + data[i].split(",")[0] + "</option>");
+                }
+            });
+        });
+
+
+
+        $("#measureTypeSingle").change(function () {
+            // 捕获选择框中的选中项的value值  还有另外一种写法
+            var t1 = $("#viscountCompetenceCode").val();
+            var t2 = $("#measureTypeSingle").val();
+            // var t = document.getElementById('name').value;
+            <!--异步请求-->
+            $.ajax({
+                <!--请求路径，与后端对应-->
+                url: prefix + "/select3",
+                <!--请求类型-->
+                type: "get",
+                <!--期待的返回数据类型-->
+                dataType: "json",
+                <!--传递给后端的数据  "regionId"是传递给后端的参数名   t是本页面的参数-->
+                data: {
+                    "viscountCompetenceCode": t1,
+                    "measureTypeCode": t2
+                },
+                <!--前端接收数据成功是执行的该函数-->
+                success: function (data) {
+                    <!--清空下拉框中的缓存-->
+
+                    $("#measureTarget").empty();
+                    <!--避免下拉框的值不变-->
+                    $("#measureTarget").append("<option></option>");
+                    <!--使用循环解析后端传来的数据，并用使用js动态拼接html语言-->
+                    for (var i = 0; i < data.length; i++)
+                        // $("#competenceDescription").append("<option th:value='" + data[i] + "'th:text=" + data[i] + "'>" + "</option>");
+                        $("#measureTarget").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+                }
+            });
+        });
+
+
+        $("input[name='plannedTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='executedTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $(function() {
+            $('.summernote').summernote({
+                lang: 'zh-CN',
+                callbacks: {
+                    onChange: function(contents, $edittable) {
+                        $("input[name='" + this.id + "']").val(contents);
+                    },
+                    onImageUpload: function(files) {
+                        var obj = this;
+                    	var data = new FormData();
+                    	data.append("file", files[0]);
+                    	$.ajax({
+                            type: "post",
+                            url: ctx + "common/upload",
+                    		data: data,
+                    		cache: false,
+                    		contentType: false,
+                    		processData: false,
+                    		dataType: 'json',
+                    		success: function(result) {
+                    		    if (result.code == web_status.SUCCESS) {
+                    		        $('#' + obj.id).summernote('insertImage', result.url);
+                    		    } else {
+                    		        $.modal.alertError(result.msg);
+                    		    }
+                    		},
+                    		error: function(error) {
+                    		    $.modal.alertWarning("图片上传失败。");
+                    		}
+                    	});
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

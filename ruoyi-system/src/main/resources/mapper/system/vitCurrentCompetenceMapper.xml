@@ -19,6 +19,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select current_competence_ID, name, code, viscount_competence_code, competence_description, the_current_value, the_last_value, comment from 06_current_competence
     </sql>
 
+    <select id="selectvitCurrentCompetenceAll" parameterType="vitCurrentCompetence" resultMap="vitCurrentCompetenceResult">
+        <include refid="selectvitCurrentCompetenceVo"/>
+    </select>
+
     <select id="selectvitCurrentCompetenceList" parameterType="vitCurrentCompetence" resultMap="vitCurrentCompetenceResult">
         <include refid="selectvitCurrentCompetenceVo"/>
         <where>  
@@ -33,6 +37,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectvitCurrentCompetenceById" parameterType="Long" resultMap="vitCurrentCompetenceResult">
         <include refid="selectvitCurrentCompetenceVo"/>
         where current_competence_ID = #{currentCompetenceId}
+    </select>
+
+    <select id="selectvitCurrentCompetenceByCode" parameterType="String" resultMap="vitCurrentCompetenceResult">
+        <include refid="selectvitCurrentCompetenceVo"/>
+        where code = #{code}
     </select>
         
     <insert id="insertvitCurrentCompetence" parameterType="vitCurrentCompetence" useGeneratedKeys="true" keyProperty="currentCompetenceId">

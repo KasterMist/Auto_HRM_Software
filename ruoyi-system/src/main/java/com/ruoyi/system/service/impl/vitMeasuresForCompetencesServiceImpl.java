@@ -106,4 +106,25 @@ public class vitMeasuresForCompetencesServiceImpl implements IvitMeasuresForComp
     {
         return vitMeasuresForCompetencesMapper.deletevitMeasuresForCompetencesById(viscountCompetenceId);
     }
+
+    @Override
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesAll(){
+        return vitMeasuresForCompetencesMapper.selectvitMeasuresForCompetencesAll();
+    }
+
+    @Override
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByDescription(String competenceDescription){
+        return vitMeasuresForCompetencesMapper.selectvitMeasuresForCompetencesByDescription(competenceDescription);
+    }
+
+    @Override
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByMeasureTypeCode(int measureTypeCode){
+        return vitMeasuresForCompetencesMapper.selectvitMeasuresForCompetencesByMeasureTypeCode(measureTypeCode);
+    }
+
+    @Override
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByCompetenceCode(String viscountCompetenceCode){
+        return vitMeasuresForCompetencesMapper.selectvitMeasuresForCompetencesByCompetenceCode(viscountCompetenceCode);
+    }
+
 }

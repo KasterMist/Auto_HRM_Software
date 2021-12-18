@@ -58,4 +58,6 @@ public interface IvitRoleTypeService
      * @return 结果
      */
     public int deletevitRoleTypeById(Long roleTypeCode);
+
+    public List<vitRoleType> selectvitRoleTypeAll();
 }

@@ -2,8 +2,10 @@ package com.ruoyi.web.controller;
 
 import java.util.List;
 
+import com.ruoyi.system.domain.vitRoleType;
 import com.ruoyi.system.domain.vitRoles;
 import com.ruoyi.system.domain.vitStaff;
+import com.ruoyi.system.service.IvitRoleTypeService;
 import com.ruoyi.system.service.IvitRolesService;
 import com.ruoyi.system.service.IvitStaffService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -44,6 +46,9 @@ public class vitStaffHasRoleController extends BaseController
 
     @Autowired
     private IvitRolesService vitRolesService;
+
+    @Autowired
+    private IvitRoleTypeService vitRoleTypeService;
 
     @RequiresPermissions("system:vitStaffHasRole:view")
     @GetMapping()
@@ -87,8 +92,10 @@ public class vitStaffHasRoleController extends BaseController
     {
         List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
         List<vitRoles> vitRolesList = vitRolesService.selectVitRolesAll();
+        List<vitRoleType> vitRoleTypeList = vitRoleTypeService.selectvitRoleTypeAll();
         mmap.put("vitStaffs", vitStaffList);
         mmap.put("vitRoles", vitRolesList);
+        mmap.put("vitRoleTypes", vitRoleTypeList);
         return prefix + "/add";
     }
 
@@ -114,8 +121,10 @@ public class vitStaffHasRoleController extends BaseController
         mmap.put("vitStaffHasRole", vitStaffHasRole);
         List<vitStaff> vitStaffList = vitStaffService.getvitStaffListAll();
         List<vitRoles> vitRolesList = vitRolesService.selectVitRolesAll();
+        List<vitRoleType> vitRoleTypeList = vitRoleTypeService.selectvitRoleTypeAll();
         mmap.put("vitStaffs", vitStaffList);
         mmap.put("vitRoles", vitRolesList);
+        mmap.put("vitRoleTypes", vitRoleTypeList);
         return prefix + "/edit";
     }
 

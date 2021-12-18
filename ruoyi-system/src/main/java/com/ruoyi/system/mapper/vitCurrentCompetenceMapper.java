@@ -58,4 +58,8 @@ public interface vitCurrentCompetenceMapper
      * @return 结果
      */
     public int deletevitCurrentCompetenceByIds(String[] currentCompetenceIds);
+
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceAll();
+
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceByCode(String code);
 }

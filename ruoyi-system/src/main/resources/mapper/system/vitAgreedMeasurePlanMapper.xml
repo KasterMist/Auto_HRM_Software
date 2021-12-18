@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.vitAgreedMeasurePlanMapper">
+    
+    <resultMap type="vitAgreedMeasurePlan" id="vitAgreedMeasurePlanResult">
+        <result property="measurePlanId"    column="measure_plan_ID"    />
+        <result property="code"    column="code"    />
+        <result property="viscountCompetenceCode"    column="viscount_competence_code"    />
+        <result property="measureTypeSingle"    column="measure_type_single"    />
+        <result property="measureTarget"    column="measure_target"    />
+        <result property="measureContent"    column="measure_content"    />
+        <result property="comment"    column="comment"    />
+        <result property="plannedTime"    column="planned_time"    />
+        <result property="executedTime"    column="executed_time"    />
+        <result property="location"    column="location"    />
+    </resultMap>
+
+    <sql id="selectvitAgreedMeasurePlanVo">
+        select measure_plan_ID, code, viscount_competence_code, measure_type_single, measure_target, measure_content, comment, planned_time, executed_time, location from 12_agreed_measure_plan
+    </sql>
+
+    <select id="selectvitAgreedMeasurePlanList" parameterType="vitAgreedMeasurePlan" resultMap="vitAgreedMeasurePlanResult">
+        <include refid="selectvitAgreedMeasurePlanVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="viscountCompetenceCode != null  and viscountCompetenceCode != ''"> and viscount_competence_code = #{viscountCompetenceCode}</if>
+            <if test="measureTypeSingle != null "> and measure_type_single = #{measureTypeSingle}</if>
+            <if test="plannedTime != null "> and planned_time = #{plannedTime}</if>
+            <if test="executedTime != null "> and executed_time = #{executedTime}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+        </where>
+    </select>
+    
+    <select id="selectvitAgreedMeasurePlanById" parameterType="Long" resultMap="vitAgreedMeasurePlanResult">
+        <include refid="selectvitAgreedMeasurePlanVo"/>
+        where measure_plan_ID = #{measurePlanId}
+    </select>
+        
+    <insert id="insertvitAgreedMeasurePlan" parameterType="vitAgreedMeasurePlan" useGeneratedKeys="true" keyProperty="measurePlanId">
+        insert into 12_agreed_measure_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code,</if>
+            <if test="measureTypeSingle != null">measure_type_single,</if>
+            <if test="measureTarget != null">measure_target,</if>
+            <if test="measureContent != null">measure_content,</if>
+            <if test="comment != null">comment,</if>
+            <if test="plannedTime != null">planned_time,</if>
+            <if test="executedTime != null">executed_time,</if>
+            <if test="location != null">location,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="viscountCompetenceCode != null">#{viscountCompetenceCode},</if>
+            <if test="measureTypeSingle != null">#{measureTypeSingle},</if>
+            <if test="measureTarget != null">#{measureTarget},</if>
+            <if test="measureContent != null">#{measureContent},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="plannedTime != null">#{plannedTime},</if>
+            <if test="executedTime != null">#{executedTime},</if>
+            <if test="location != null">#{location},</if>
+         </trim>
+    </insert>
+
+    <update id="updatevitAgreedMeasurePlan" parameterType="vitAgreedMeasurePlan">
+        update 12_agreed_measure_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="viscountCompetenceCode != null">viscount_competence_code = #{viscountCompetenceCode},</if>
+            <if test="measureTypeSingle != null">measure_type_single = #{measureTypeSingle},</if>
+            <if test="measureTarget != null">measure_target = #{measureTarget},</if>
+            <if test="measureContent != null">measure_content = #{measureContent},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="plannedTime != null">planned_time = #{plannedTime},</if>
+            <if test="executedTime != null">executed_time = #{executedTime},</if>
+            <if test="location != null">location = #{location},</if>
+        </trim>
+        where measure_plan_ID = #{measurePlanId}
+    </update>
+
+    <delete id="deletevitAgreedMeasurePlanById" parameterType="Long">
+        delete from 12_agreed_measure_plan where measure_plan_ID = #{measurePlanId}
+    </delete>
+
+    <delete id="deletevitAgreedMeasurePlanByIds" parameterType="String">
+        delete from 12_agreed_measure_plan where measure_plan_ID in 
+        <foreach item="measurePlanId" collection="array" open="(" separator="," close=")">
+            #{measurePlanId}
+        </foreach>
+    </delete>
+
+</mapper>

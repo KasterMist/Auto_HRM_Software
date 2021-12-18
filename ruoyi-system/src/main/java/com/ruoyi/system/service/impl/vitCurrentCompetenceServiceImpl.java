@@ -113,4 +113,14 @@ public class vitCurrentCompetenceServiceImpl implements IvitCurrentCompetenceSer
     {
         return vitCurrentCompetenceMapper.deletevitCurrentCompetenceById(currentCompetenceId);
     }
+
+    @Override
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceAll(){
+        return vitCurrentCompetenceMapper.selectvitCurrentCompetenceAll();
+    }
+
+    @Override
+    public List<vitCurrentCompetence> selectvitCurrentCompetenceByCode(String code){
+        return vitCurrentCompetenceMapper.selectvitCurrentCompetenceByCode(code);
+    }
 }

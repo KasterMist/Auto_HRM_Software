@@ -58,4 +58,12 @@ public interface IvitMeasuresForCompetencesService
      * @return 结果
      */
     public int deletevitMeasuresForCompetencesById(Long viscountCompetenceId);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesAll();
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByDescription(String competenceDescription);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByMeasureTypeCode(int measureTypeCode);
+
+    public List<vitMeasuresForCompetences> selectvitMeasuresForCompetencesByCompetenceCode(String viscountCompetenceCode);
 }

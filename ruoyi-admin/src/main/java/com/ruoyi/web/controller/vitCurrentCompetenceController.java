@@ -91,7 +91,6 @@ public class vitCurrentCompetenceController extends BaseController
                 }
             }
         }
-        System.out.println("once");
         return competenceList;
     }
 

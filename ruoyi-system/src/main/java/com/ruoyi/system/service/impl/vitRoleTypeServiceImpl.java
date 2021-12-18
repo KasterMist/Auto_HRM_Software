@@ -91,4 +91,9 @@ public class vitRoleTypeServiceImpl implements IvitRoleTypeService
     {
         return vitRoleTypeMapper.deletevitRoleTypeById(roleTypeCode);
     }
+
+    @Override
+    public List<vitRoleType> selectvitRoleTypeAll(){
+        return vitRoleTypeMapper.selectvitRoleTypeAll();
+    }
 }
